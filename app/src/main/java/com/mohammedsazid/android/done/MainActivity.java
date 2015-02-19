@@ -114,9 +114,9 @@ public class MainActivity extends FragmentActivity {
                 }
             });
 
-            colorAnimator.setDuration(60 * 1000);
+            colorAnimator.setDuration(20 * 1000);
 
-            counter = new CounterClass(60 * 1000, 1000, timerTextView, progressBar);
+            counter = new CounterClass(20 * 1000, 1000, timerTextView, progressBar);
 
             return rootView;
         }

@@ -46,6 +46,6 @@ public class CounterClass extends CountDownTimer {
 
     @Override
     public void onFinish() {
-
+        counterTextView.setText("00m:00s\nGreat job! You finished the task!");
     }
 }
