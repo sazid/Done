@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,15 +55,17 @@ public class MainActivity extends FragmentActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+
+        private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
 
         private View backgroundView;
         private TextView timerTextView;
         private Button toggleBtn;
         private ProgressBar progressBar;
+
+        private ValueAnimator colorAnimator;
+        private CounterClass counter;
 
         public PlaceholderFragment() {
         }
@@ -74,29 +77,46 @@ public class MainActivity extends FragmentActivity {
             progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         }
 
+        private void bindListeners() {
+            toggleBtn.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int id = v.getId();
+
+            if (id == R.id.button) {
+                colorAnimator.start();
+                counter.start();
+            }
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             bindViews(rootView);
+            bindListeners();
 
             Integer colorFrom = getResources().getColor(R.color.red_500);
             Integer colorTo = getResources().getColor(R.color.green_500);
 
-            ValueAnimator colorAnimator = ValueAnimator.ofObject(
+            colorAnimator = ValueAnimator.ofObject(
                     new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     backgroundView.setBackgroundColor((Integer) animation.getAnimatedValue());
                     toggleBtn.setTextColor((Integer) animation.getAnimatedValue());
-                    progressBar.setProgress(40);
+                    progressBar.setProgress((int) (animation.getAnimatedFraction() * 1000));
+//                    Log.v(LOG_TAG, String.valueOf((int) (animation.getAnimatedFraction() * 1000)));
                 }
             });
 
-            colorAnimator.setDuration(10000);
-            colorAnimator.start();
+            colorAnimator.setDuration(60 * 1000);
+
+            counter = new CounterClass(60 * 1000, 1000, timerTextView, progressBar);
 
             return rootView;
         }
