@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="red" type="color"></item>
+    <item name="white" type="color">#FFFFFF</item>
+
+    <item name="red_500" type="color">#F44336</item>
+    <item name="red_700" type="color">#D32F2F</item>
+
+    <item name="green_500" type="color">#4CAF50</item>
+    <item name="green_700" type="color">#388E3C</item>
 </resources>
