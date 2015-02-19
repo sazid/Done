@@ -2,22 +2,20 @@ package com.mohammedsazid.android.done;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 
 public class MainActivity extends FragmentActivity {
@@ -55,12 +53,13 @@ public class MainActivity extends FragmentActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+    public static class PlaceholderFragment extends Fragment
+            implements View.OnClickListener, ViewSwitcher.ViewFactory {
 
         private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
 
         private View backgroundView;
-        private TextView timerTextView;
+        private TextSwitcher timerTextSwitcher;
         private Button toggleBtn;
         private ProgressBar progressBar;
 
@@ -72,13 +71,14 @@ public class MainActivity extends FragmentActivity {
 
         private void bindViews(View rootView) {
             backgroundView = rootView.findViewById(R.id.background);
-            timerTextView = (TextView) rootView.findViewById(R.id.timer_textView);
             toggleBtn = (Button) rootView.findViewById(R.id.button);
             progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+            timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
         }
 
         private void bindListeners() {
             toggleBtn.setOnClickListener(this);
+            timerTextSwitcher.setFactory(this);
         }
 
         @Override
@@ -114,11 +114,25 @@ public class MainActivity extends FragmentActivity {
                 }
             });
 
-            colorAnimator.setDuration(20 * 1000);
+            Animation in = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+            Animation out = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+            timerTextSwitcher.setInAnimation(in);
+            timerTextSwitcher.setOutAnimation(out);
 
-            counter = new CounterClass(20 * 1000, 1000, timerTextView, progressBar);
+            colorAnimator.setDuration(20 * 1000);
+            counter = new CounterClass(20 * 1000, 1000, timerTextSwitcher, progressBar);
+            timerTextSwitcher.setText("00m:00s");
 
             return rootView;
+        }
+
+        @Override
+        public View makeView() {
+            TextView t = new TextView(getActivity());
+            t.setTextSize(44);
+            t.setTextColor(getResources().getColor(R.color.white));
+            t.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            return t;
         }
     }
 }

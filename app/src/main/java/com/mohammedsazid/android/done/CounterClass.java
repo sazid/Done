@@ -2,6 +2,7 @@ package com.mohammedsazid.android.done;
 
 import android.os.CountDownTimer;
 import android.widget.ProgressBar;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
@@ -11,13 +12,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class CounterClass extends CountDownTimer {
 
-    private TextView counterTextView;
+    private TextSwitcher counterTextView;
     private ProgressBar progressBar;
 
     public CounterClass(
             long millisInFuture,
             long countDownInterval,
-            TextView view,
+            TextSwitcher view,
             ProgressBar bar
     ) {
         super(millisInFuture, countDownInterval);
@@ -37,9 +38,9 @@ public class CounterClass extends CountDownTimer {
                 TimeUnit.MILLISECONDS.toMinutes(millis)
         );
 
-        String hms = String.format("%02dm:%02ds", minutes, seconds);
+        String displayString = String.format("%02dm:%02ds", minutes, seconds);
 
-        counterTextView.setText(hms);
+        counterTextView.setCurrentText(displayString);
 
         progressBar.setProgress( (int) (100 / millis) );
     }
