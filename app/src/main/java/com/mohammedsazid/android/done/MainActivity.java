@@ -126,6 +126,7 @@ public class MainActivity extends FragmentActivity {
             colorAnimator.cancel();
 
             toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+            timerTextSwitcher.setText(PlaceholderFragment.formatTime(timeoutDuration));
         }
 
         private void setTimer() {
