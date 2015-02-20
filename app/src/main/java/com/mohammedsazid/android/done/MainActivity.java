@@ -125,6 +125,7 @@ public class MainActivity extends FragmentActivity {
 
             toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
             timerToggle = TimerToggle.SHOULD_STOP;
+            timerSetSeekBar.setVisibility(View.INVISIBLE);
 
             // keep the screen on while the user is using the program
             getActivity()
@@ -139,6 +140,7 @@ public class MainActivity extends FragmentActivity {
             toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
             timerTextSwitcher.setText(PlaceholderFragment.formatTime(timeoutDuration));
             progressBar.setProgress(0);
+            timerSetSeekBar.setVisibility(View.VISIBLE);
 
             timerToggle = TimerToggle.SHOULD_START;
 
@@ -182,13 +184,11 @@ public class MainActivity extends FragmentActivity {
                 switch (timerToggle) {
                     case SHOULD_START:
                         startCountdown();
-                        timerSetSeekBar.setVisibility(View.INVISIBLE);
 
                         timerToggle = TimerToggle.SHOULD_STOP;
                         break;
                     case SHOULD_STOP:
                         cancelCountdown();
-                        timerSetSeekBar.setVisibility(View.VISIBLE);
 
                         timerToggle = TimerToggle.SHOULD_START;
                         break;
@@ -237,6 +237,7 @@ public class MainActivity extends FragmentActivity {
                 timeoutDuration = DEFAULT_TIMEOUT_DURATION;
                 cancelCountdown();
                 createNotification("Task cancelled!", "Oh, the task has been cancelled! :(");
+                timerSetSeekBar.setVisibility(View.VISIBLE);
             }
         }
 
