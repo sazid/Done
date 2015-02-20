@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -33,6 +34,9 @@ public class MainActivity extends FragmentActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        // keep the screen on while the user is using the program
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     //    @Override
