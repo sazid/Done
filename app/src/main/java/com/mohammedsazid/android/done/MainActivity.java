@@ -7,6 +7,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -229,6 +231,12 @@ public class MainActivity extends FragmentActivity {
         }
 
         @Override
+        public void onPause() {
+            super.onPause();
+            cancelCountdown(true);
+        }
+
+        @Override
         public void onStop() {
             super.onStop();
             createNotification("Task cancelled!", "Oh, the task has been cancelled! :(");
@@ -252,6 +260,7 @@ public class MainActivity extends FragmentActivity {
 
             builder.setPriority(Notification.PRIORITY_MAX);
 
+            // The intent to call when the notification is tapped`
             Intent intent = new Intent(getActivity(), MainActivity.class);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -260,8 +269,12 @@ public class MainActivity extends FragmentActivity {
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT
             );
-
             builder.setContentIntent(pendingIntent);
+
+            // Set notification sound
+            Uri notificationSound = RingtoneManager
+                    .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            builder.setSound(notificationSound);
 
             NotificationManager manager =
                     (NotificationManager) getActivity()
