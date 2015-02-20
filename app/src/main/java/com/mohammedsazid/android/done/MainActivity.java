@@ -40,9 +40,6 @@ public class MainActivity extends FragmentActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-
-        // keep the screen on while the user is using the program
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     //    @Override
@@ -128,6 +125,11 @@ public class MainActivity extends FragmentActivity {
 
             toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
             timerToggle = TimerToggle.SHOULD_STOP;
+
+            // keep the screen on while the user is using the program
+            getActivity()
+                    .getWindow()
+                    .addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         private void cancelCountdown() {
@@ -139,6 +141,11 @@ public class MainActivity extends FragmentActivity {
             progressBar.setProgress(0);
 
             timerToggle = TimerToggle.SHOULD_START;
+
+            // clear screen on flag
+            getActivity()
+                    .getWindow()
+                    .clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         private void setTimer() {
@@ -299,6 +306,13 @@ public class MainActivity extends FragmentActivity {
                 toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
 
                 createNotification("Task finished", "Now, go and take some rest :)");
+
+                // clear screen on flag
+                getActivity()
+                        .getWindow()
+                        .clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+                timerToggle = TimerToggle.SHOULD_START;
             }
         }
 
