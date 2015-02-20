@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity {
     public static class PlaceholderFragment extends Fragment
             implements View.OnClickListener, ViewSwitcher.ViewFactory, SeekBar.OnSeekBarChangeListener {
 
-        //        private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
+        //        private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();\
         private TimerToggle timerToggle = TimerToggle.SHOULD_START;
         private int timeoutDuration = 5 * 60 * 1000;
         private View backgroundView;
@@ -158,13 +158,13 @@ public class MainActivity extends FragmentActivity {
                 switch (timerToggle) {
                     case SHOULD_START:
                         startCountdown();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        timerSetSeekBar.setVisibility(View.INVISIBLE);
 
                         timerToggle = TimerToggle.SHOULD_STOP;
                         break;
                     case SHOULD_STOP:
                         cancelCountdown();
-                        progressBar.setVisibility(View.VISIBLE);
+                        timerSetSeekBar.setVisibility(View.VISIBLE);
 
                         timerToggle = TimerToggle.SHOULD_START;
                         break;
