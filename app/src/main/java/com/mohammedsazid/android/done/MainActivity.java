@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -54,14 +56,17 @@ public class MainActivity extends FragmentActivity {
 //    }
 
     public static class PlaceholderFragment extends Fragment
-            implements View.OnClickListener, ViewSwitcher.ViewFactory {
+            implements View.OnClickListener, ViewSwitcher.ViewFactory, SeekBar.OnSeekBarChangeListener {
 
         private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
+
+        private int timeoutDuration = 5 * 60 * 1000;
 
         private View backgroundView;
         private TextSwitcher timerTextSwitcher;
         private Button toggleBtn;
         private ProgressBar progressBar;
+        private SeekBar timerSetSeekBar;
 
         private ValueAnimator colorAnimator;
         private CounterClass counter;
@@ -69,16 +74,43 @@ public class MainActivity extends FragmentActivity {
         public PlaceholderFragment() {
         }
 
+        private void setTimeoutDuration(int min) {
+            int oneSecond = 1000;
+            int oneMinute = 60 * oneSecond;
+            timeoutDuration = min * 5 * oneMinute;
+        }
+
         private void bindViews(View rootView) {
             backgroundView = rootView.findViewById(R.id.background);
             toggleBtn = (Button) rootView.findViewById(R.id.button);
             progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
             timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
+            timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
         }
 
         private void bindListeners() {
             toggleBtn.setOnClickListener(this);
             timerTextSwitcher.setFactory(this);
+            timerSetSeekBar.setOnSeekBarChangeListener(this);
+        }
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//            Log.v(LOG_TAG, "Progress: " + progress + ", fromUser: " + fromUser);
+            progress += 1;
+            setTimeoutDuration(progress);
+//            Log.v(LOG_TAG, "" + timeoutDuration);
+//            Log.v(LOG_TAG, CounterClass.formatTime(timeoutDuration));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
         }
 
         @Override

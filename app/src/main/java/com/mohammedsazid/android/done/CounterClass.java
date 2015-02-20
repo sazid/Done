@@ -30,15 +30,7 @@ public class CounterClass extends CountDownTimer {
     public void onTick(long millisUntilFinished) {
         long millis = millisUntilFinished;
 
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(
-                TimeUnit.MILLISECONDS.toHours(millis)
-        );
-
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(
-                TimeUnit.MILLISECONDS.toMinutes(millis)
-        );
-
-        String displayString = String.format("%02dm:%02ds", minutes, seconds);
+        String displayString = formatTime(millis);
 
         counterTextView.setCurrentText(displayString);
 
@@ -48,5 +40,21 @@ public class CounterClass extends CountDownTimer {
     @Override
     public void onFinish() {
         counterTextView.setText("Great job! You finished the task!");
+    }
+
+    public static String formatTime(long time) {
+        String str = null;
+
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(
+                TimeUnit.MILLISECONDS.toHours(time)
+        );
+
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(
+                TimeUnit.MILLISECONDS.toMinutes(time)
+        );
+
+        str = String.format("%02dm:%02ds", minutes, seconds);
+
+        return str;
     }
 }
