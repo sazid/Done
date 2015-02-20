@@ -102,12 +102,6 @@ public class MainActivity extends FragmentActivity {
             return str;
         }
 
-        @Override
-        public void onStart() {
-            super.onStart();
-            dismissNotification();
-        }
-
         private void setTimeoutDuration(int min) {
             int oneSecond = 1000;
             int oneMinute = 60 * oneSecond;
@@ -133,19 +127,18 @@ public class MainActivity extends FragmentActivity {
             colorAnimator.start();
 
             toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
+            timerToggle = TimerToggle.SHOULD_STOP;
         }
 
-        private void cancelCountdown(boolean user) {
-//            if (user) {
-            // the user cancelled the countdown
-//            }
-
+        private void cancelCountdown() {
             counter.cancel();
             colorAnimator.cancel();
 
             toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
             timerTextSwitcher.setText(PlaceholderFragment.formatTime(timeoutDuration));
             progressBar.setProgress(0);
+
+            timerToggle = TimerToggle.SHOULD_START;
         }
 
         private void setTimer() {
@@ -187,7 +180,7 @@ public class MainActivity extends FragmentActivity {
                         timerToggle = TimerToggle.SHOULD_STOP;
                         break;
                     case SHOULD_STOP:
-                        cancelCountdown(true);
+                        cancelCountdown();
                         timerSetSeekBar.setVisibility(View.VISIBLE);
 
                         timerToggle = TimerToggle.SHOULD_START;
@@ -230,16 +223,14 @@ public class MainActivity extends FragmentActivity {
         }
 
         @Override
-        public void onPause() {
-            super.onPause();
-            timeoutDuration = DEFAULT_TIMEOUT_DURATION;
-            cancelCountdown(true);
-        }
-
-        @Override
         public void onStop() {
             super.onStop();
-            createNotification("Task cancelled!", "Oh, the task has been cancelled! :(");
+
+            if (timerToggle == TimerToggle.SHOULD_STOP) {
+                timeoutDuration = DEFAULT_TIMEOUT_DURATION;
+                cancelCountdown();
+                createNotification("Task cancelled!", "Oh, the task has been cancelled! :(");
+            }
         }
 
         @Override
@@ -260,6 +251,12 @@ public class MainActivity extends FragmentActivity {
 
             builder.setPriority(Notification.PRIORITY_MAX);
 
+            // Set notification sound & vibration
+            builder.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
+
+            // Automatically cancel the notification when the user taps it
+            builder.setAutoCancel(true);
+
             // The intent to call when the notification is tapped`
             Intent intent = new Intent(getActivity(), MainActivity.class);
 
@@ -271,22 +268,10 @@ public class MainActivity extends FragmentActivity {
             );
             builder.setContentIntent(pendingIntent);
 
-            // Set notification sound & vibration
-            builder.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
-
             NotificationManager manager =
                     (NotificationManager) getActivity()
                             .getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify(PlaceholderFragment.TASK_FINISHED_NOTIFICATION, builder.build());
-        }
-
-        private void dismissNotification() {
-            NotificationManager manager =
-                    (NotificationManager) getActivity().getSystemService(
-                            Context.NOTIFICATION_SERVICE
-                    );
-
-            manager.cancelAll();
         }
 
         private enum TimerToggle {
