@@ -2,10 +2,16 @@ package com.mohammedsazid.android.done;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +70,7 @@ public class MainActivity extends FragmentActivity {
     public static class PlaceholderFragment extends Fragment
             implements View.OnClickListener, ViewSwitcher.ViewFactory, SeekBar.OnSeekBarChangeListener {
 
+        static int TASK_FINISHED_NOTIFICATION = 0;
         //        private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();\
         private TimerToggle timerToggle = TimerToggle.SHOULD_START;
         private int timeoutDuration = 5 * 60 * 1000;
@@ -94,6 +101,12 @@ public class MainActivity extends FragmentActivity {
             return str;
         }
 
+        @Override
+        public void onStart() {
+            super.onStart();
+            dismissNotification();
+        }
+
         private void setTimeoutDuration(int min) {
             int oneSecond = 1000;
             int oneMinute = 60 * oneSecond;
@@ -121,7 +134,11 @@ public class MainActivity extends FragmentActivity {
             toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
         }
 
-        private void cancelCountdown() {
+        private void cancelCountdown(boolean user) {
+//            if (user) {
+            // the user cancelled the countdown
+//            }
+
             counter.cancel();
             colorAnimator.cancel();
 
@@ -141,7 +158,7 @@ public class MainActivity extends FragmentActivity {
             setTimeoutDuration(progress);
             timerTextSwitcher.setText(PlaceholderFragment.formatTime(timeoutDuration));
 
-            cancelCountdown();
+//            cancelCountdown();
 
             setTimer();
         }
@@ -169,7 +186,7 @@ public class MainActivity extends FragmentActivity {
                         timerToggle = TimerToggle.SHOULD_STOP;
                         break;
                     case SHOULD_STOP:
-                        cancelCountdown();
+                        cancelCountdown(true);
                         timerSetSeekBar.setVisibility(View.VISIBLE);
 
                         timerToggle = TimerToggle.SHOULD_START;
@@ -197,7 +214,6 @@ public class MainActivity extends FragmentActivity {
                     backgroundView.setBackgroundColor((Integer) animation.getAnimatedValue());
                     toggleBtn.setTextColor((Integer) animation.getAnimatedValue());
                     progressBar.setProgress((int) (animation.getAnimatedFraction() * 1000));
-//                    Log.v(LOG_TAG, String.valueOf((int) (animation.getAnimatedFraction() * 1000)));
                 }
             });
 
@@ -213,12 +229,53 @@ public class MainActivity extends FragmentActivity {
         }
 
         @Override
+        public void onStop() {
+            super.onStop();
+            createNotification("Task cancelled!", "Oh, the task has been cancelled! :(");
+        }
+
+        @Override
         public View makeView() {
             TextView t = new TextView(getActivity());
             t.setTextSize(44);
             t.setTextColor(getResources().getColor(R.color.white));
             t.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             return t;
+        }
+
+        private void createNotification(String contentTitle, String contentText) {
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(getActivity())
+                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setContentTitle(contentTitle)
+                            .setContentText(contentText);
+
+            builder.setPriority(Notification.PRIORITY_MAX);
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    getActivity(),
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+
+            builder.setContentIntent(pendingIntent);
+
+            NotificationManager manager =
+                    (NotificationManager) getActivity()
+                            .getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify(PlaceholderFragment.TASK_FINISHED_NOTIFICATION, builder.build());
+        }
+
+        private void dismissNotification() {
+            NotificationManager manager =
+                    (NotificationManager) getActivity().getSystemService(
+                            Context.NOTIFICATION_SERVICE
+                    );
+
+            manager.cancelAll();
         }
 
         private enum TimerToggle {
@@ -244,6 +301,8 @@ public class MainActivity extends FragmentActivity {
             public void onFinish() {
                 timerTextSwitcher.setText("Great job! You finished the task!");
                 toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+
+                createNotification("Task finished", "Now, go and take some rest :)");
             }
         }
 
