@@ -7,8 +7,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -72,10 +70,11 @@ public class MainActivity extends FragmentActivity {
     public static class PlaceholderFragment extends Fragment
             implements View.OnClickListener, ViewSwitcher.ViewFactory, SeekBar.OnSeekBarChangeListener {
 
-        static int TASK_FINISHED_NOTIFICATION = 0;
         //        private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();\
+        static int TASK_FINISHED_NOTIFICATION = 0;
+        private int DEFAULT_TIMEOUT_DURATION = 5 * 60 * 1000;
+        private int timeoutDuration = DEFAULT_TIMEOUT_DURATION;
         private TimerToggle timerToggle = TimerToggle.SHOULD_START;
-        private int timeoutDuration = 5 * 60 * 1000;
         private View backgroundView;
         private TextSwitcher timerTextSwitcher;
         private Button toggleBtn;
@@ -233,6 +232,7 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onPause() {
             super.onPause();
+            timeoutDuration = DEFAULT_TIMEOUT_DURATION;
             cancelCountdown(true);
         }
 
@@ -271,10 +271,8 @@ public class MainActivity extends FragmentActivity {
             );
             builder.setContentIntent(pendingIntent);
 
-            // Set notification sound
-            Uri notificationSound = RingtoneManager
-                    .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            builder.setSound(notificationSound);
+            // Set notification sound & vibration
+            builder.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
 
             NotificationManager manager =
                     (NotificationManager) getActivity()
