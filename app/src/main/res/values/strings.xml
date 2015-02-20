@@ -3,5 +3,9 @@
 
     <string name="app_name">Done</string>
     <string name="timer_textView">00m:00s</string>
+    <string name="toggleButton">@string/toggleButtonStart</string>
+
+    <string name="toggleButtonStart">Start</string>
+    <string name="toggleButtonStop">Stop</string>
 
 </resources>

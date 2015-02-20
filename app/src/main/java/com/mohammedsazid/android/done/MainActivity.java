@@ -3,9 +3,9 @@ package com.mohammedsazid.android.done;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +18,8 @@ import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends FragmentActivity {
@@ -58,20 +60,34 @@ public class MainActivity extends FragmentActivity {
     public static class PlaceholderFragment extends Fragment
             implements View.OnClickListener, ViewSwitcher.ViewFactory, SeekBar.OnSeekBarChangeListener {
 
-        private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
-
+        //        private final String LOG_TAG = PlaceholderFragment.class.getSimpleName();
+        private TimerToggle timerToggle = TimerToggle.SHOULD_START;
         private int timeoutDuration = 5 * 60 * 1000;
-
         private View backgroundView;
         private TextSwitcher timerTextSwitcher;
         private Button toggleBtn;
         private ProgressBar progressBar;
         private SeekBar timerSetSeekBar;
-
         private ValueAnimator colorAnimator;
         private CounterClass counter;
 
         public PlaceholderFragment() {
+        }
+
+        private static String formatTime(long time) {
+            String str;
+
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(
+                    TimeUnit.MILLISECONDS.toHours(time)
+            );
+
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(
+                    TimeUnit.MILLISECONDS.toMinutes(time)
+            );
+
+            str = String.format("%02dm:%02ds", minutes, seconds);
+
+            return str;
         }
 
         private void setTimeoutDuration(int min) {
@@ -82,7 +98,7 @@ public class MainActivity extends FragmentActivity {
 
         private void bindViews(View rootView) {
             backgroundView = rootView.findViewById(R.id.background);
-            toggleBtn = (Button) rootView.findViewById(R.id.button);
+            toggleBtn = (Button) rootView.findViewById(R.id.toggleButton);
             progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
             timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
             timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
@@ -94,21 +110,34 @@ public class MainActivity extends FragmentActivity {
             timerSetSeekBar.setOnSeekBarChangeListener(this);
         }
 
+        private void startCountdown() {
+            counter.start();
+            colorAnimator.start();
+
+            toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
+        }
+
         private void cancelCountdown() {
             counter.cancel();
             colorAnimator.cancel();
+
+            toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+        }
+
+        private void setTimer() {
+            colorAnimator.setDuration(timeoutDuration);
+            counter = new CounterClass(timeoutDuration, 1000);
         }
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             progress += 1;
             setTimeoutDuration(progress);
-            timerTextSwitcher.setText(CounterClass.formatTime(timeoutDuration));
+            timerTextSwitcher.setText(PlaceholderFragment.formatTime(timeoutDuration));
 
             cancelCountdown();
 
-            colorAnimator.setDuration(timeoutDuration);
-            counter = new CounterClass(timeoutDuration, 1000, timerTextSwitcher, progressBar);
+            setTimer();
         }
 
         @Override
@@ -125,9 +154,21 @@ public class MainActivity extends FragmentActivity {
         public void onClick(View v) {
             int id = v.getId();
 
-            if (id == R.id.button) {
-                colorAnimator.start();
-                counter.start();
+            if (id == R.id.toggleButton) {
+                switch (timerToggle) {
+                    case SHOULD_START:
+                        startCountdown();
+                        progressBar.setVisibility(View.INVISIBLE);
+
+                        timerToggle = TimerToggle.SHOULD_STOP;
+                        break;
+                    case SHOULD_STOP:
+                        cancelCountdown();
+                        progressBar.setVisibility(View.VISIBLE);
+
+                        timerToggle = TimerToggle.SHOULD_START;
+                        break;
+                }
             }
         }
 
@@ -159,9 +200,8 @@ public class MainActivity extends FragmentActivity {
             timerTextSwitcher.setInAnimation(in);
             timerTextSwitcher.setOutAnimation(out);
 
-            colorAnimator.setDuration(timeoutDuration);
-            counter = new CounterClass(timeoutDuration, 1000, timerTextSwitcher, progressBar);
-            timerTextSwitcher.setText(CounterClass.formatTime(timeoutDuration));
+            setTimer();
+            timerTextSwitcher.setText(PlaceholderFragment.formatTime(timeoutDuration));
 
             return rootView;
         }
@@ -174,5 +214,32 @@ public class MainActivity extends FragmentActivity {
             t.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             return t;
         }
+
+        private enum TimerToggle {
+            SHOULD_START, SHOULD_STOP
+        }
+
+        private class CounterClass extends CountDownTimer {
+
+            public CounterClass(long millisInFuture, long countDownInterval) {
+                super(millisInFuture, countDownInterval);
+            }
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                String displayString = PlaceholderFragment.formatTime(millisUntilFinished);
+
+                timerTextSwitcher.setCurrentText(displayString);
+
+                progressBar.setProgress((int) (100 / millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+                timerTextSwitcher.setText("Great job! You finished the task!");
+                toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+            }
+        }
+
     }
 }
