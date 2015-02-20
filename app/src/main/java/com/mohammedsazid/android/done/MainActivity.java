@@ -94,13 +94,21 @@ public class MainActivity extends FragmentActivity {
             timerSetSeekBar.setOnSeekBarChangeListener(this);
         }
 
+        private void cancelCountdown() {
+            counter.cancel();
+            colorAnimator.cancel();
+        }
+
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//            Log.v(LOG_TAG, "Progress: " + progress + ", fromUser: " + fromUser);
             progress += 1;
             setTimeoutDuration(progress);
-//            Log.v(LOG_TAG, "" + timeoutDuration);
-//            Log.v(LOG_TAG, CounterClass.formatTime(timeoutDuration));
+            timerTextSwitcher.setText(CounterClass.formatTime(timeoutDuration));
+
+            cancelCountdown();
+
+            colorAnimator.setDuration(timeoutDuration);
+            counter = new CounterClass(timeoutDuration, 1000, timerTextSwitcher, progressBar);
         }
 
         @Override
@@ -151,9 +159,9 @@ public class MainActivity extends FragmentActivity {
             timerTextSwitcher.setInAnimation(in);
             timerTextSwitcher.setOutAnimation(out);
 
-            colorAnimator.setDuration(20 * 1000);
-            counter = new CounterClass(20 * 1000, 1000, timerTextSwitcher, progressBar);
-            timerTextSwitcher.setText("00m:00s");
+            colorAnimator.setDuration(timeoutDuration);
+            counter = new CounterClass(timeoutDuration, 1000, timerTextSwitcher, progressBar);
+            timerTextSwitcher.setText(CounterClass.formatTime(timeoutDuration));
 
             return rootView;
         }
