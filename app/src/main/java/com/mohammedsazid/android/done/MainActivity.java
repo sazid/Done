@@ -323,7 +323,7 @@ public class MainActivity extends FragmentActivity {
                 timerTextSwitcher.setText("Great job! You finished the task!");
                 toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
 
-                createNotification("Task finished", "Now, go and take some rest :)");
+                createNotification("Done", "Now, go and take some rest :)");
 
                 // clear screen on flag
                 getActivity()
@@ -331,6 +331,11 @@ public class MainActivity extends FragmentActivity {
                         .clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
                 timerToggle = TimerToggle.SHOULD_START;
+
+                SnackbarManager.show(
+                        Snackbar.with(getActivity())
+                                .text("Done!")
+                );
             }
         }
 
