@@ -26,6 +26,9 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -131,6 +134,11 @@ public class MainActivity extends FragmentActivity {
             getActivity()
                     .getWindow()
                     .addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+            SnackbarManager.show(
+                    Snackbar.with(getActivity())
+                            .text("Task countdown started!")
+            );
         }
 
         private void cancelCountdown() {
@@ -148,6 +156,11 @@ public class MainActivity extends FragmentActivity {
             getActivity()
                     .getWindow()
                     .clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+            SnackbarManager.show(
+                    Snackbar.with(getActivity())
+                            .text("Task cancelled")
+            );
         }
 
         private void setTimer() {
