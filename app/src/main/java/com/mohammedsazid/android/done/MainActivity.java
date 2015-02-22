@@ -260,7 +260,11 @@ public class MainActivity extends FragmentActivity {
             builder.setPriority(Notification.PRIORITY_MAX);
 
             // Set notification sound & vibration
-            builder.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND);
+            builder.setDefaults(
+                    Notification.DEFAULT_VIBRATE
+                            | Notification.DEFAULT_SOUND
+                            | Notification.DEFAULT_LIGHTS
+            );
 
             // Automatically cancel the notification when the user taps it
             builder.setAutoCancel(true);
