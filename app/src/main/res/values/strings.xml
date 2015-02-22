@@ -7,5 +7,6 @@
 
     <string name="toggleButtonStart">Start</string>
     <string name="toggleButtonStop">Stop</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
