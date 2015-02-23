@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity$PlaceholderFragment">
@@ -11,6 +10,7 @@
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:background="@color/red_500"
+        android:elevation="5dp"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -18,35 +18,23 @@
 
         <TextSwitcher
             android:id="@+id/timer_textSwitcher"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/toggleButton"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/timer_textView"
             android:textColor="@color/white"
-            android:textSize="44sp" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:max="1000"
-            android:progress="0" />
+            android:textSize="22sp" />
 
         <Button
             android:id="@+id/toggleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/seekBar"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/timer_textSwitcher"
             android:text="@string/toggleButton"
             android:textColor="@color/red_500" />
 
@@ -55,8 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/toggleButton"
+            android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/toggleButton"
-            android:layout_below="@+id/toggleButton"
             android:max="5"
             android:progress="0" />
 

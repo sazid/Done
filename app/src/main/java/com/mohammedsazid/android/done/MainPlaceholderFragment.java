@@ -19,7 +19,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -29,6 +28,8 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
 import java.util.concurrent.TimeUnit;
+
+//import android.widget.ProgressBar;
 
 /**
 * Created by MohammedSazid on 2/22/2015.
@@ -44,7 +45,7 @@ public class MainPlaceholderFragment extends Fragment
     private View backgroundView;
     private TextSwitcher timerTextSwitcher;
     private Button toggleBtn;
-    private ProgressBar progressBar;
+    //    private ProgressBar progressBar;
     private SeekBar timerSetSeekBar;
     private ValueAnimator colorAnimator;
     private CounterClass counter;
@@ -75,9 +76,9 @@ public class MainPlaceholderFragment extends Fragment
     }
 
     private void bindViews(View rootView) {
-        backgroundView = rootView.findViewById(R.id.background);
+        backgroundView = rootView.findViewById(R.id.countArea);
         toggleBtn = (Button) rootView.findViewById(R.id.toggleButton);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+//        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
     }
@@ -113,7 +114,7 @@ public class MainPlaceholderFragment extends Fragment
 
         toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
         timerTextSwitcher.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
-        progressBar.setProgress(0);
+//        progressBar.setProgress(0);
         timerSetSeekBar.setVisibility(View.VISIBLE);
 
         timerToggle = TimerToggle.SHOULD_START;
@@ -193,7 +194,7 @@ public class MainPlaceholderFragment extends Fragment
             public void onAnimationUpdate(ValueAnimator animation) {
                 backgroundView.setBackgroundColor((Integer) animation.getAnimatedValue());
                 toggleBtn.setTextColor((Integer) animation.getAnimatedValue());
-                progressBar.setProgress((int) (animation.getAnimatedFraction() * 1000));
+//                progressBar.setProgress((int) (animation.getAnimatedFraction() * 1000));
             }
         });
 
@@ -281,7 +282,7 @@ public class MainPlaceholderFragment extends Fragment
 
             timerTextSwitcher.setCurrentText(displayString);
 
-            progressBar.setProgress((int) (100 / millisUntilFinished));
+//            progressBar.setProgress((int) (100 / millisUntilFinished));
         }
 
         @Override
