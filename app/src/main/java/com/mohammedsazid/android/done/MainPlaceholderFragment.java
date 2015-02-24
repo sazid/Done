@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class MainPlaceholderFragment extends Fragment
     private SeekBar timerSetSeekBar;
     private ValueAnimator colorAnimator;
     private CounterClass counter;
+    private ImageButton settingsButton;
 
     // Animations
     private Animation toggleBtnAnim;
@@ -87,6 +89,7 @@ public class MainPlaceholderFragment extends Fragment
         toggleBtn = (FloatingActionButton) rootView.findViewById(R.id.toggleButton);
         timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+        settingsButton = (ImageButton) rootView.findViewById(R.id.settingsButton);
 
         toggleBtnAnim = AnimationUtils.loadAnimation(
                 getActivity(), R.anim.toggle_button_anim);
@@ -97,6 +100,7 @@ public class MainPlaceholderFragment extends Fragment
         toggleBtn.setOnClickListener(this);
         timerTextSwitcher.setFactory(this);
         timerSetSeekBar.setOnSeekBarChangeListener(this);
+        settingsButton.setOnClickListener(this);
     }
 
     private void animateToggleButton(boolean toggle) {
@@ -204,6 +208,11 @@ public class MainPlaceholderFragment extends Fragment
                     timerToggle = TimerToggle.SHOULD_START;
                     break;
             }
+        } else if (id == R.id.settingsButton) {
+            SnackbarManager.show(
+                    Snackbar.with(getActivity())
+                            .text("Settings")
+            );
         }
     }
 
