@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
@@ -32,23 +33,29 @@ import java.util.concurrent.TimeUnit;
 //import android.widget.ProgressBar;
 
 /**
-* Created by MohammedSazid on 2/22/2015.
-*/
+ * Created by MohammedSazid on 2/22/2015.
+ */
 public class MainPlaceholderFragment extends Fragment
         implements View.OnClickListener, ViewSwitcher.ViewFactory, SeekBar.OnSeekBarChangeListener {
 
-    //        private final String LOG_TAG = MainPlaceholderFragment.class.getSimpleName();\
+    // Constants and others
+//    private final String LOG_TAG = MainPlaceholderFragment.class.getSimpleName();
     static int TASK_FINISHED_NOTIFICATION = 0;
     private int DEFAULT_TIMEOUT_DURATION = 5 * 60 * 1000;
     private int timeoutDuration = DEFAULT_TIMEOUT_DURATION;
     private TimerToggle timerToggle = TimerToggle.SHOULD_START;
+    private Handler handler;
+
+    // Views
     private View backgroundView;
     private TextSwitcher timerTextSwitcher;
     private FloatingActionButton toggleBtn;
-    //    private ProgressBar progressBar;
     private SeekBar timerSetSeekBar;
     private ValueAnimator colorAnimator;
     private CounterClass counter;
+
+    // Animations
+    private Animation toggleBtnAnim;
 
     public MainPlaceholderFragment() {
     }
@@ -78,9 +85,12 @@ public class MainPlaceholderFragment extends Fragment
     private void bindViews(View rootView) {
         backgroundView = rootView.findViewById(R.id.countArea);
         toggleBtn = (FloatingActionButton) rootView.findViewById(R.id.toggleButton);
-//        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+
+        toggleBtnAnim = AnimationUtils.loadAnimation(
+                getActivity(), R.anim.toggle_button_anim);
+        handler = new Handler();
     }
 
     private void bindListeners() {
@@ -89,12 +99,32 @@ public class MainPlaceholderFragment extends Fragment
         timerSetSeekBar.setOnSeekBarChangeListener(this);
     }
 
+    private void animateToggleButton(boolean toggle) {
+        toggleBtn.startAnimation(toggleBtnAnim);
+
+        if (toggle) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
+                }
+            }, 200);
+        } else {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
+                }
+            }, 200);
+        }
+    }
+
     private void startCountdown() {
         counter.start();
         colorAnimator.start();
 
-//        toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
-        toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
+        animateToggleButton(true);
+
         timerToggle = TimerToggle.SHOULD_STOP;
         timerSetSeekBar.setVisibility(View.INVISIBLE);
 
@@ -113,10 +143,9 @@ public class MainPlaceholderFragment extends Fragment
         counter.cancel();
         colorAnimator.cancel();
 
-//        toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
-        toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
+        animateToggleButton(false);
+
         timerTextSwitcher.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
-//        progressBar.setProgress(0);
         timerSetSeekBar.setVisibility(View.VISIBLE);
 
         timerToggle = TimerToggle.SHOULD_START;
@@ -290,8 +319,7 @@ public class MainPlaceholderFragment extends Fragment
         @Override
         public void onFinish() {
             timerTextSwitcher.setText("Great job! You finished the task!");
-//            toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
-            toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
+            animateToggleButton(false);
 
             createNotification("Done", "Now, go and take some rest :)");
 
