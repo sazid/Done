@@ -18,12 +18,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -44,7 +44,7 @@ public class MainPlaceholderFragment extends Fragment
     private TimerToggle timerToggle = TimerToggle.SHOULD_START;
     private View backgroundView;
     private TextSwitcher timerTextSwitcher;
-    private Button toggleBtn;
+    private FloatingActionButton toggleBtn;
     //    private ProgressBar progressBar;
     private SeekBar timerSetSeekBar;
     private ValueAnimator colorAnimator;
@@ -77,7 +77,7 @@ public class MainPlaceholderFragment extends Fragment
 
     private void bindViews(View rootView) {
         backgroundView = rootView.findViewById(R.id.countArea);
-        toggleBtn = (Button) rootView.findViewById(R.id.toggleButton);
+        toggleBtn = (FloatingActionButton) rootView.findViewById(R.id.toggleButton);
 //        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
@@ -93,7 +93,8 @@ public class MainPlaceholderFragment extends Fragment
         counter.start();
         colorAnimator.start();
 
-        toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
+//        toggleBtn.setText(getResources().getString(R.string.toggleButtonStop));
+        toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
         timerToggle = TimerToggle.SHOULD_STOP;
         timerSetSeekBar.setVisibility(View.INVISIBLE);
 
@@ -112,7 +113,8 @@ public class MainPlaceholderFragment extends Fragment
         counter.cancel();
         colorAnimator.cancel();
 
-        toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+//        toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+        toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
         timerTextSwitcher.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
 //        progressBar.setProgress(0);
         timerSetSeekBar.setVisibility(View.VISIBLE);
@@ -193,7 +195,7 @@ public class MainPlaceholderFragment extends Fragment
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 backgroundView.setBackgroundColor((Integer) animation.getAnimatedValue());
-                toggleBtn.setTextColor((Integer) animation.getAnimatedValue());
+//                toggleBtn.setTextColor((Integer) animation.getAnimatedValue());
 //                progressBar.setProgress((int) (animation.getAnimatedFraction() * 1000));
             }
         });
@@ -288,7 +290,8 @@ public class MainPlaceholderFragment extends Fragment
         @Override
         public void onFinish() {
             timerTextSwitcher.setText("Great job! You finished the task!");
-            toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+//            toggleBtn.setText(getResources().getString(R.string.toggleButtonStart));
+            toggleBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
 
             createNotification("Done", "Now, go and take some rest :)");
 

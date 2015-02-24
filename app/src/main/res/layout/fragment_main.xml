@@ -20,7 +20,7 @@
             android:id="@+id/timer_textSwitcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/toggleButton"
+            android:layout_above="@+id/seekBar"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -28,23 +28,12 @@
             android:textColor="@color/white"
             android:textSize="22sp" />
 
-        <Button
-            android:id="@+id/toggleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/seekBar"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:text="@string/toggleButton"
-            android:textColor="@color/red_500" />
-
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/toggleButton"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/toggleButton"
+            android:layout_marginBottom="12dp"
             android:max="5"
             android:progress="0" />
 
@@ -55,7 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/countArea"
-        android:background="@color/green_500"
         android:orientation="vertical">
 
         <TextView
@@ -67,7 +55,7 @@
     </LinearLayout>
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/button"
+        android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/secondaryArea"
@@ -77,6 +65,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:hapticFeedbackEnabled="true"
-        android:src="@drawable/ic_stop" />
+        android:src="@drawable/ic_play" />
 
 </RelativeLayout>
