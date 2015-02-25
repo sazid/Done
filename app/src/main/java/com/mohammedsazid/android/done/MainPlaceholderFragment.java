@@ -55,6 +55,7 @@ public class MainPlaceholderFragment extends Fragment
     private ValueAnimator colorAnimator;
     private CounterClass counter;
     private ImageButton settingsButton;
+    private ImageButton deleteButton;
 
     // Animations
     private Animation toggleBtnAnim;
@@ -90,6 +91,7 @@ public class MainPlaceholderFragment extends Fragment
         timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
         settingsButton = (ImageButton) rootView.findViewById(R.id.settingsButton);
+        deleteButton = (ImageButton) rootView.findViewById(R.id.deleteButton);
 
         toggleBtnAnim = AnimationUtils.loadAnimation(
                 getActivity(), R.anim.toggle_button_anim);
@@ -101,6 +103,7 @@ public class MainPlaceholderFragment extends Fragment
         timerTextSwitcher.setFactory(this);
         timerSetSeekBar.setOnSeekBarChangeListener(this);
         settingsButton.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
     }
 
     private void animateToggleButton(boolean toggle) {
@@ -212,6 +215,11 @@ public class MainPlaceholderFragment extends Fragment
             SnackbarManager.show(
                     Snackbar.with(getActivity())
                             .text("Settings")
+            );
+        } else if (id == R.id.deleteButton) {
+            SnackbarManager.show(
+                    Snackbar.with(getActivity())
+                            .text("Delete")
             );
         }
     }
