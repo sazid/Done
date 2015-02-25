@@ -8,4 +8,6 @@
 
     <item name="green_500" type="color">#4CAF50</item>
     <item name="green_700" type="color">#388E3C</item>
+
+    <item name="blue_700" type="color">#3F51B5</item>
 </resources>

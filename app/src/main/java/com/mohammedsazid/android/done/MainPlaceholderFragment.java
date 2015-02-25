@@ -51,8 +51,12 @@ public class MainPlaceholderFragment extends Fragment
     private TimerToggle timerToggle = TimerToggle.SHOULD_START;
     private Handler handler;
 
+    // Drawables & colors
+    private int counterBackgroundColor;
+
     // Views
-    private View backgroundView;
+    private View countArea;
+    private View revealArea;
     private TextSwitcher timerTextSwitcher;
     private FloatingActionButton toggleBtn;
     private SeekBar timerSetSeekBar;
@@ -90,7 +94,8 @@ public class MainPlaceholderFragment extends Fragment
     }
 
     private void bindViews(View rootView) {
-        backgroundView = rootView.findViewById(R.id.countArea);
+        countArea = rootView.findViewById(R.id.countArea);
+        revealArea = rootView.findViewById(R.id.revealArea);
         toggleBtn = (FloatingActionButton) rootView.findViewById(R.id.toggleButton);
         timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
@@ -138,6 +143,7 @@ public class MainPlaceholderFragment extends Fragment
 
         timerToggle = TimerToggle.SHOULD_STOP;
         timerSetSeekBar.setVisibility(View.INVISIBLE);
+        countArea.setBackgroundColor(getResources().getColor(R.color.red_500));
 
         // keep the screen on while the user is using the program
         getActivity()
@@ -203,31 +209,35 @@ public class MainPlaceholderFragment extends Fragment
         int id = v.getId();
 
         if (id == R.id.toggleButton) {
-
             // get the center for the clipping circle
             int cx = (toggleBtn.getLeft() + toggleBtn.getRight()) / 2;
             int cy = (toggleBtn.getTop() + toggleBtn.getBottom()) / 2;
 
             // get the final radius for the clipping circle
-            int finalRadius = Math.max(backgroundView.getHeight(), backgroundView.getWidth());
+            int finalRadius = Math.max(countArea.getHeight(), countArea.getWidth());
             finalRadius += 20;
 
             SupportAnimator animator =
-                    ViewAnimationUtils.createCircularReveal(backgroundView, cx, cy, 0, finalRadius);
+                    ViewAnimationUtils.createCircularReveal(countArea, cx, cy, 0, finalRadius);
             animator.setInterpolator(new AccelerateDecelerateInterpolator());
             animator.setDuration(400);
-            animator.start();
 
             switch (timerToggle) {
                 case SHOULD_START:
+                    revealArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
+                    countArea.setBackgroundColor(getResources().getColor(R.color.red_500));
                     startCountdown();
 
                     timerToggle = TimerToggle.SHOULD_STOP;
+                    animator.start();
                     break;
                 case SHOULD_STOP:
+                    countArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
+                    revealArea.setBackgroundColor(counterBackgroundColor);
                     cancelCountdown();
 
                     timerToggle = TimerToggle.SHOULD_START;
+                    animator.start();
                     break;
             }
         } else if (id == R.id.settingsButton) {
@@ -259,9 +269,8 @@ public class MainPlaceholderFragment extends Fragment
         colorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                backgroundView.setBackgroundColor((Integer) animation.getAnimatedValue());
-//                toggleBtn.setTextColor((Integer) animation.getAnimatedValue());
-//                progressBar.setProgress((int) (animation.getAnimatedFraction() * 1000));
+                countArea.setBackgroundColor((Integer) animation.getAnimatedValue());
+                counterBackgroundColor = (Integer) animation.getAnimatedValue();
             }
         });
 
