@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.nispok:snackbar:2.9.1'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
+    compile 'com.github.ozodrukh:CircularReveal:1.0.4'
 }

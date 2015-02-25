@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -30,6 +31,9 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
 import java.util.concurrent.TimeUnit;
+
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
 
 //import android.widget.ProgressBar;
 
@@ -199,6 +203,21 @@ public class MainPlaceholderFragment extends Fragment
         int id = v.getId();
 
         if (id == R.id.toggleButton) {
+
+            // get the center for the clipping circle
+            int cx = (toggleBtn.getLeft() + toggleBtn.getRight()) / 2;
+            int cy = (toggleBtn.getTop() + toggleBtn.getBottom()) / 2;
+
+            // get the final radius for the clipping circle
+            int finalRadius = Math.max(backgroundView.getHeight(), backgroundView.getWidth());
+            finalRadius += 20;
+
+            SupportAnimator animator =
+                    ViewAnimationUtils.createCircularReveal(backgroundView, cx, cy, 0, finalRadius);
+            animator.setInterpolator(new AccelerateDecelerateInterpolator());
+            animator.setDuration(400);
+            animator.start();
+
             switch (timerToggle) {
                 case SHOULD_START:
                     startCountdown();
