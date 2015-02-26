@@ -7,11 +7,16 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +31,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.mohammedsazid.android.done.data.DoneContract;
+import com.mohammedsazid.android.done.data.DoneProvider;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -39,8 +46,14 @@ import io.codetail.animation.ViewAnimationUtils;
 /**
  * Created by MohammedSazid on 2/22/2015.
  */
-public class MainPlaceholderFragment extends Fragment
-        implements View.OnClickListener, ViewSwitcher.ViewFactory, SeekBar.OnSeekBarChangeListener {
+public class MainPlaceholderFragment
+        extends
+        Fragment
+        implements
+        View.OnClickListener,
+        ViewSwitcher.ViewFactory,
+        SeekBar.OnSeekBarChangeListener,
+        android.support.v4.app.LoaderManager.LoaderCallbacks {
 
     // Constants and others
 //    private final String LOG_TAG = MainPlaceholderFragment.class.getSimpleName();
@@ -49,6 +62,7 @@ public class MainPlaceholderFragment extends Fragment
     private int timeoutDuration = DEFAULT_TIMEOUT_DURATION;
     private TimerToggle timerToggle = TimerToggle.SHOULD_START;
     private Handler handler;
+    private SimpleCursorAdapter cursorAdapter;
 
     // Drawables & colors
     private int counterBackgroundColor;
@@ -106,9 +120,17 @@ public class MainPlaceholderFragment extends Fragment
         handler = new Handler();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Prepare the loader. Either, re-connect with an existing loader,
+        // or create a new one
+        getLoaderManager().initLoader(0, null, this);
+    }
+
     private void bindListeners() {
         toggleBtn.setOnClickListener(this);
-//        counterTextView.setFactory(this);
         timerSetSeekBar.setOnSeekBarChangeListener(this);
         settingsButton.setOnClickListener(this);
         deleteButton.setOnClickListener(this);
@@ -343,6 +365,33 @@ public class MainPlaceholderFragment extends Fragment
                 (NotificationManager) getActivity()
                         .getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(MainPlaceholderFragment.TASK_FINISHED_NOTIFICATION, builder.build());
+    }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        // Since, we only have one content provider to deal with, we don't need to
+        // manage multiple loaders with the 'id'
+        Uri baseUri = DoneProvider.CONTENT_URI;
+
+        // list of columns we want to retrieve values from
+        String[] projection = {
+                DoneContract.TasksTable.COLUMN_TASK_NAME,
+                DoneContract.TasksTable.COLUMN_TASK_TIME,
+                DoneContract.TasksTable.COLUMN_DATETIME,
+                DoneContract.TasksTable.COLUMN_TASK_STATUS
+        };
+
+        return new CursorLoader(getActivity(), baseUri, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Object data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
     }
 
     private enum TimerToggle {
