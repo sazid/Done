@@ -13,12 +13,12 @@ public class DoneContract {
     /**
      * The stats table which stores all the task related information
      */
-    public static class StatsTable implements BaseColumns {
+    public static class TasksTable implements BaseColumns {
 
         /**
          * Name of the table
          */
-        public static final String TABLE_NAME = "stats";
+        public static final String TABLE_NAME = "tasks";
 
         /* Column names */
 
@@ -57,14 +57,14 @@ public class DoneContract {
          * The SQL statement for creating the table
          */
         private static final String DATABASE_CREATE_SQL =
-                "CREATE TABLE " + StatsTable.TABLE_NAME
+                "CREATE TABLE " + TasksTable.TABLE_NAME
                         + " ("
-                        + StatsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + StatsTable.COLUMN_TASK_NAME + " TEXT NOT NULL, "
-                        + StatsTable.COLUMN_TASK_TIME + " REAL NOT NULL, "
-                        + StatsTable.COLUMN_DATETIME + " TEXT NOT NULL,"
-                        + StatsTable.COLUMN_TASK_STATUS + " TEXT NOT NULL,"
-                        + StatsTable.COLUMN_DESCRIPTION + " TEXT"
+                        + TasksTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + TasksTable.COLUMN_TASK_NAME + " TEXT NOT NULL, "
+                        + TasksTable.COLUMN_TASK_TIME + " REAL NOT NULL, "
+                        + TasksTable.COLUMN_DATETIME + " TEXT NOT NULL,"
+                        + TasksTable.COLUMN_TASK_STATUS + " TEXT NOT NULL,"
+                        + TasksTable.COLUMN_DESCRIPTION + " TEXT"
                         + ");";
 
 
@@ -72,15 +72,15 @@ public class DoneContract {
          * @param db The SQLiteDatabase object to create the new table
          */
         public static void onCreate(SQLiteDatabase db) {
-            db.execSQL(StatsTable.DATABASE_CREATE_SQL);
+            db.execSQL(TasksTable.DATABASE_CREATE_SQL);
         }
 
         /**
          * Upgrades the existing database schema of the table
          */
         public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + StatsTable.TABLE_NAME);
-            StatsTable.onCreate(db);
+            db.execSQL("DROP TABLE IF EXISTS " + TasksTable.TABLE_NAME);
+            TasksTable.onCreate(db);
         }
     }
 }

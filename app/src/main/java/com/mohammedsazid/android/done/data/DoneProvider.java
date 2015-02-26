@@ -13,7 +13,7 @@ import android.text.TextUtils;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static com.mohammedsazid.android.done.data.DoneContract.StatsTable;
+import static com.mohammedsazid.android.done.data.DoneContract.TasksTable;
 
 /**
  * Created by MohammedSazid on 2/26/2015.
@@ -65,7 +65,7 @@ public class DoneProvider extends ContentProvider {
         checkColumns(projection);
 
         // Set the table
-        queryBuilder.setTables(StatsTable.TABLE_NAME);
+        queryBuilder.setTables(TasksTable.TABLE_NAME);
 
         int uriType = sUriMatcher.match(uri);
         switch (uriType) {
@@ -73,7 +73,7 @@ public class DoneProvider extends ContentProvider {
                 break;
             case TASK_ID:
                 // adding the ID to the original query
-                queryBuilder.appendWhere(StatsTable._ID + "=" + uri.getLastPathSegment());
+                queryBuilder.appendWhere(TasksTable._ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
@@ -97,7 +97,7 @@ public class DoneProvider extends ContentProvider {
 
         switch (uriType) {
             case TASKS:
-                id = db.insert(StatsTable.TABLE_NAME, null, values);
+                id = db.insert(TasksTable.TABLE_NAME, null, values);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
@@ -115,18 +115,18 @@ public class DoneProvider extends ContentProvider {
 
         switch (uriType) {
             case TASKS:
-                deletedRows = db.delete(StatsTable.TABLE_NAME, selection, selectionArgs);
+                deletedRows = db.delete(TasksTable.TABLE_NAME, selection, selectionArgs);
                 break;
             case TASK_ID:
                 String task_id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
                     db.delete(
-                            StatsTable.TABLE_NAME,
-                            StatsTable._ID + "=" + task_id,
+                            TasksTable.TABLE_NAME,
+                            TasksTable._ID + "=" + task_id,
                             null);
                 } else {
-                    db.delete(StatsTable.TABLE_NAME,
-                            StatsTable._ID + "=" + task_id + " AND " + selection,
+                    db.delete(TasksTable.TABLE_NAME,
+                            TasksTable._ID + "=" + task_id + " AND " + selection,
                             selectionArgs);
                 }
 
@@ -160,12 +160,12 @@ public class DoneProvider extends ContentProvider {
 
     private void checkColumns(String[] projection) {
         String[] available = {
-                StatsTable._ID,
-                StatsTable.COLUMN_TASK_NAME,
-                StatsTable.COLUMN_TASK_TIME,
-                StatsTable.COLUMN_DATETIME,
-                StatsTable.COLUMN_TASK_STATUS,
-                StatsTable.COLUMN_DESCRIPTION
+                TasksTable._ID,
+                TasksTable.COLUMN_TASK_NAME,
+                TasksTable.COLUMN_TASK_TIME,
+                TasksTable.COLUMN_DATETIME,
+                TasksTable.COLUMN_TASK_STATUS,
+                TasksTable.COLUMN_DESCRIPTION
         };
 
         if (projection != null) {

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.mohammedsazid.android.done.data.DoneContract.StatsTable;
+import static com.mohammedsazid.android.done.data.DoneContract.TasksTable;
 
 /**
  * Created by MohammedSazid on 2/26/2015.
@@ -21,14 +21,14 @@ public class DoneDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // create the database with the required table(s)
-        StatsTable.onCreate(db);
+        TasksTable.onCreate(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // for now, just drop the table if any upgrade is made to the database
         // and create a new one
-        StatsTable.onUpgrade(db, oldVersion, newVersion);
+        TasksTable.onUpgrade(db, oldVersion, newVersion);
     }
 
 }
