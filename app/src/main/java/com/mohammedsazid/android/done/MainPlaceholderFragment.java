@@ -135,8 +135,9 @@ public class MainPlaceholderFragment extends Fragment
     }
 
     private void startCountdown() {
-        revealArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
+        revealArea.setBackgroundColor(getResources().getColor(R.color.deep_purple_500));
         countArea.setBackgroundColor(getResources().getColor(R.color.red_500));
+        toggleBtn.setColorNormal(getResources().getColor(R.color.deep_purple_500));
 
         counter.start();
         colorAnimator.start();
@@ -159,8 +160,9 @@ public class MainPlaceholderFragment extends Fragment
     }
 
     private void cancelCountdown() {
-        countArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
+        countArea.setBackgroundColor(getResources().getColor(R.color.deep_purple_500));
         revealArea.setBackgroundColor(counterBackgroundColor);
+        toggleBtn.setColorNormal(getResources().getColor(R.color.red_500));
 
         counter.cancel();
         colorAnimator.cancel();
