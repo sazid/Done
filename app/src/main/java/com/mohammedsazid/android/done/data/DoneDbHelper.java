@@ -12,27 +12,16 @@ import static com.mohammedsazid.android.done.data.DoneContract.StatsTable;
 public class DoneDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "done.db";
-    private static final int DATABASE_VERSINON = 1;
-
-    // the SQL statement for creating the table
-    private static final String DATABASE_CREATE_SQL =
-            "CREATE TABLE " + StatsTable.TABLE_NAME
-                    + " ("
-                    + StatsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + StatsTable.COLUMN_TASK_NAME + " TEXT NOT NULL, "
-                    + StatsTable.COLUMN_TASK_TIME + " REAL NOT NULL, "
-                    + StatsTable.COLUMN_DATETIME + " TEXT NOT NULL,"
-                    + StatsTable.COLUMN_DESCRIPTION + " TEXT"
-                    + ");";
+    private static final int DATABASE_VERSION = 1;
 
     public DoneDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSINON);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // create the database with the required table(s)
-        db.execSQL(DATABASE_CREATE_SQL);
+        db.execSQL(StatsTable.DATABASE_CREATE_SQL);
     }
 
     @Override

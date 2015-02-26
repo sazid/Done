@@ -46,5 +46,18 @@ public class DoneContract {
          */
         public static final String COLUMN_DESCRIPTION = "description";
 
+        /**
+         * The SQL statement for creating the table
+         */
+        public static final String DATABASE_CREATE_SQL =
+                "CREATE TABLE " + StatsTable.TABLE_NAME
+                        + " ("
+                        + StatsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + StatsTable.COLUMN_TASK_NAME + " TEXT NOT NULL, "
+                        + StatsTable.COLUMN_TASK_TIME + " REAL NOT NULL, "
+                        + StatsTable.COLUMN_DATETIME + " TEXT NOT NULL,"
+                        + StatsTable.COLUMN_DESCRIPTION + " TEXT"
+                        + ");";
+
     }
 }
