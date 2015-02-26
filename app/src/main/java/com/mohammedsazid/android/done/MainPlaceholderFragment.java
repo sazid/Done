@@ -25,7 +25,9 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -77,6 +79,7 @@ public class MainPlaceholderFragment
     private CounterClass counter;
     private ImageButton settingsButton;
     private ImageButton deleteButton;
+    private ListView tasksListView;
 
     // Animations
     private Animation toggleBtnAnim;
@@ -114,6 +117,7 @@ public class MainPlaceholderFragment
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
         settingsButton = (ImageButton) rootView.findViewById(R.id.settingsButton);
         deleteButton = (ImageButton) rootView.findViewById(R.id.deleteButton);
+        tasksListView = (ListView) rootView.findViewById(R.id.taskListView);
 
         toggleBtnAnim = AnimationUtils.loadAnimation(
                 getActivity(), R.anim.toggle_button_anim);
@@ -299,13 +303,20 @@ public class MainPlaceholderFragment
             }
         });
 
-//        Animation in = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-//        Animation out = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-//        counterTextView.setInAnimation(in);
-//        counterTextView.setOutAnimation(out);
-
         setTimer();
         counterTextView.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
+
+        String[] temporaryData = {
+                "Physics",
+                "Math",
+                "Chemistry",
+                "Biology",
+                "Bangla",
+                "English"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                getActivity(), android.R.layout.simple_list_item_1, temporaryData);
+        tasksListView.setAdapter(adapter);
 
         return rootView;
     }

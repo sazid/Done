@@ -77,26 +77,18 @@
 
     </io.codetail.widget.RevealFrameLayout>
 
-    <LinearLayout
-        android:id="@+id/secondaryArea"
+    <ListView
+        android:id="@+id/taskListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/revealArea"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="This is some text" />
-    </LinearLayout>
+        android:orientation="vertical" />
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/secondaryArea"
+        android:layout_above="@+id/taskListView"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="-28dp"
