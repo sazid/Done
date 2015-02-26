@@ -21,15 +21,14 @@ public class DoneDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // create the database with the required table(s)
-        db.execSQL(StatsTable.DATABASE_CREATE_SQL);
+        StatsTable.onCreate(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // for now, just drop the table if any upgrade is made to the database
         // and create a new one
-        db.execSQL("DROP TABLE IF EXISTS " + StatsTable.TABLE_NAME);
-        onCreate(db);
+        StatsTable.onUpgrade(db, oldVersion, newVersion);
     }
 
 }
