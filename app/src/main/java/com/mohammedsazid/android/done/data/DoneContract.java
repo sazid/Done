@@ -26,32 +26,32 @@ public class DoneContract {
          * Label of the task<br>
          * <b>[required]</b>
          */
-        private static final String COLUMN_TASK_NAME = "task_label";
+        public static final String COLUMN_TASK_NAME = "task_label";
 
         /**
          * Time taken to complete the task<br>
          * <b>[required, but default is "Task"]</b>
          */
-        private static final String COLUMN_TASK_TIME = "task_time";
+        public static final String COLUMN_TASK_TIME = "task_time";
 
         /**
          * Timestamp of the moment when the task completed<br>
          * <b>[required]</b>
          */
-        private static final String COLUMN_DATETIME = "datetime";
+        public static final String COLUMN_DATETIME = "datetime";
 
         /**
          * Status of the task (indicates whether the task is complete or not)
          * <b>[required]</b>
          */
-        private static final String COLUMN_TASK_STATUS = "task_status";
+        public static final String COLUMN_TASK_STATUS = "task_status";
 
         /**
          * Description of the task done<br>
          * <i>(not used currently)</i><br>
          * <b>[not required]</b>
          */
-        private static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_DESCRIPTION = "description";
 
         /**
          * The SQL statement for creating the table
