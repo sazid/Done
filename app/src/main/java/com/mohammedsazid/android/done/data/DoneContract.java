@@ -41,6 +41,12 @@ public class DoneContract {
         private static final String COLUMN_DATETIME = "datetime";
 
         /**
+         * Status of the task (indicates whether the task is complete or not)
+         * <b>[required]</b>
+         */
+        private static final String COLUMN_TASK_STATUS = "task_status";
+
+        /**
          * Description of the task done<br>
          * <i>(not used currently)</i><br>
          * <b>[not required]</b>
@@ -57,6 +63,7 @@ public class DoneContract {
                         + StatsTable.COLUMN_TASK_NAME + " TEXT NOT NULL, "
                         + StatsTable.COLUMN_TASK_TIME + " REAL NOT NULL, "
                         + StatsTable.COLUMN_DATETIME + " TEXT NOT NULL,"
+                        + StatsTable.COLUMN_TASK_STATUS + " TEXT NOT NULL,"
                         + StatsTable.COLUMN_DESCRIPTION + " TEXT"
                         + ");";
 
