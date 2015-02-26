@@ -46,13 +46,13 @@ public class DoneProvider extends ContentProvider {
     private DoneDbHelper dbHelper;
 
     @Override
-    public boolean onCreate() {
+    synchronized public boolean onCreate() {
         dbHelper = new DoneDbHelper(getContext());
         return false;
     }
 
     @Override
-    public Cursor query(
+    synchronized public Cursor query(
             Uri uri,
             String[] projection,
             String selection,
@@ -90,7 +90,7 @@ public class DoneProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    synchronized public Uri insert(Uri uri, ContentValues values) {
         int uriType = sUriMatcher.match(uri);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         long id = 0;
@@ -108,7 +108,7 @@ public class DoneProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    synchronized public int delete(Uri uri, String selection, String[] selectionArgs) {
         int uriType = sUriMatcher.match(uri);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int deletedRows = 0;
@@ -140,7 +140,7 @@ public class DoneProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    synchronized public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         throw new UnsupportedOperationException("Update of values not allowed");
     }
 
