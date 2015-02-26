@@ -22,7 +22,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -57,7 +56,7 @@ public class MainPlaceholderFragment extends Fragment
     // Views
     private View countArea;
     private View revealArea;
-    private TextSwitcher timerTextSwitcher;
+    private TextView counterTextView;
     private FloatingActionButton toggleBtn;
     private SeekBar timerSetSeekBar;
     private ValueAnimator colorAnimator;
@@ -97,7 +96,7 @@ public class MainPlaceholderFragment extends Fragment
         countArea = rootView.findViewById(R.id.countArea);
         revealArea = rootView.findViewById(R.id.revealArea);
         toggleBtn = (FloatingActionButton) rootView.findViewById(R.id.toggleButton);
-        timerTextSwitcher = (TextSwitcher) rootView.findViewById(R.id.timer_textSwitcher);
+        counterTextView = (TextView) rootView.findViewById(R.id.counterTextView);
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
         settingsButton = (ImageButton) rootView.findViewById(R.id.settingsButton);
         deleteButton = (ImageButton) rootView.findViewById(R.id.deleteButton);
@@ -109,7 +108,7 @@ public class MainPlaceholderFragment extends Fragment
 
     private void bindListeners() {
         toggleBtn.setOnClickListener(this);
-        timerTextSwitcher.setFactory(this);
+//        counterTextView.setFactory(this);
         timerSetSeekBar.setOnSeekBarChangeListener(this);
         settingsButton.setOnClickListener(this);
         deleteButton.setOnClickListener(this);
@@ -136,6 +135,9 @@ public class MainPlaceholderFragment extends Fragment
     }
 
     private void startCountdown() {
+        revealArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
+        countArea.setBackgroundColor(getResources().getColor(R.color.red_500));
+
         counter.start();
         colorAnimator.start();
 
@@ -157,12 +159,15 @@ public class MainPlaceholderFragment extends Fragment
     }
 
     private void cancelCountdown() {
+        countArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
+        revealArea.setBackgroundColor(counterBackgroundColor);
+
         counter.cancel();
         colorAnimator.cancel();
 
         animateToggleButton(false);
 
-        timerTextSwitcher.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
+        counterTextView.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
         timerSetSeekBar.setVisibility(View.VISIBLE);
 
         timerToggle = TimerToggle.SHOULD_START;
@@ -187,7 +192,7 @@ public class MainPlaceholderFragment extends Fragment
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         progress += 1;
         setTimeoutDuration(progress);
-        timerTextSwitcher.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
+        counterTextView.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
 
 //            cancelCountdown();
 
@@ -224,16 +229,12 @@ public class MainPlaceholderFragment extends Fragment
 
             switch (timerToggle) {
                 case SHOULD_START:
-                    revealArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
-                    countArea.setBackgroundColor(getResources().getColor(R.color.red_500));
                     startCountdown();
 
                     timerToggle = TimerToggle.SHOULD_STOP;
                     animator.start();
                     break;
                 case SHOULD_STOP:
-                    countArea.setBackgroundColor(getResources().getColor(R.color.blue_700));
-                    revealArea.setBackgroundColor(counterBackgroundColor);
                     cancelCountdown();
 
                     timerToggle = TimerToggle.SHOULD_START;
@@ -274,13 +275,13 @@ public class MainPlaceholderFragment extends Fragment
             }
         });
 
-        Animation in = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-        Animation out = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-        timerTextSwitcher.setInAnimation(in);
-        timerTextSwitcher.setOutAnimation(out);
+//        Animation in = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+//        Animation out = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+//        counterTextView.setInAnimation(in);
+//        counterTextView.setOutAnimation(out);
 
         setTimer();
-        timerTextSwitcher.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
+        counterTextView.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
 
         return rootView;
     }
@@ -356,14 +357,12 @@ public class MainPlaceholderFragment extends Fragment
         public void onTick(long millisUntilFinished) {
             String displayString = MainPlaceholderFragment.formatTime(millisUntilFinished);
 
-            timerTextSwitcher.setCurrentText(displayString);
-
-//            progressBar.setProgress((int) (100 / millisUntilFinished));
+            counterTextView.setText(displayString);
         }
 
         @Override
         public void onFinish() {
-            timerTextSwitcher.setText("Great job! You finished the task!");
+            counterTextView.setText("Great job! You finished the task!");
             animateToggleButton(false);
 
             createNotification("Done", "Now, go and take some rest :)");
