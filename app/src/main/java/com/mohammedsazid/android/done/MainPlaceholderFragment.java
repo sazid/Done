@@ -314,6 +314,10 @@ public class MainPlaceholderFragment
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             super.onPositive(dialog);
+                            Uri contentUri = DoneProvider.CONTENT_URI;
+                            getActivity().getContentResolver()
+                                    .delete(contentUri, null, null);
+
                             SnackbarManager.show(
                                     Snackbar.with(getActivity())
                                             .text("History cleared")
