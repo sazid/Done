@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,7 +37,6 @@ import android.widget.ViewSwitcher;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
-import com.mohammedsazid.android.done.data.DoneContract;
 import com.mohammedsazid.android.done.data.DoneProvider;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
@@ -45,6 +45,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
+
+import static com.mohammedsazid.android.done.data.DoneContract.TasksTable;
 
 //import android.widget.ProgressBar;
 
@@ -219,6 +221,8 @@ public class MainPlaceholderFragment
 
         counterTextView.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
         timerSetSeekBar.setVisibility(View.VISIBLE);
+
+        saveTask();
 
         timerToggle = TimerToggle.SHOULD_START;
 
@@ -467,10 +471,10 @@ public class MainPlaceholderFragment
 
         // list of columns we want to retrieve values from
         String[] projection = {
-                DoneContract.TasksTable.COLUMN_TASK_NAME,
-                DoneContract.TasksTable.COLUMN_TASK_TIME,
-                DoneContract.TasksTable.COLUMN_DATETIME,
-                DoneContract.TasksTable.COLUMN_TASK_STATUS
+                TasksTable.COLUMN_TASK_NAME,
+                TasksTable.COLUMN_TASK_TIME,
+                TasksTable.COLUMN_DATETIME,
+                TasksTable.COLUMN_TASK_STATUS
         };
 
         return new CursorLoader(getActivity(), baseUri, projection, null, null, null);
@@ -484,6 +488,22 @@ public class MainPlaceholderFragment
     @Override
     public void onLoaderReset(Loader loader) {
 
+    }
+
+    private void saveTask() {
+        if (timeoutDuration <= 0) {
+            return;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(TasksTable.COLUMN_TASK_NAME, taskName);
+        values.put(TasksTable.COLUMN_DESCRIPTION, taskDescripiton);
+        values.put(TasksTable.COLUMN_DATETIME, currentTimeMillis);
+        values.put(TasksTable.COLUMN_TASK_TIME, timeoutDuration);
+        values.put(TasksTable.COLUMN_TASK_STATUS, taskStatusFinished);
+
+        getActivity().getContentResolver()
+                .insert(DoneProvider.CONTENT_URI, values);
     }
 
     private enum TimerToggle {
@@ -508,8 +528,12 @@ public class MainPlaceholderFragment
             currentTimeMillis = System.currentTimeMillis();
             taskStatusFinished = 1;
 
-            counterTextView.setText("Great job! You finished the task!");
+            counterTextView.setText(
+                    getResources().getString(R.string.task_finished)
+            );
             animateToggleButton(false);
+
+            saveTask();
 
             createNotification("Done", "Now, go and take some rest :)");
 
