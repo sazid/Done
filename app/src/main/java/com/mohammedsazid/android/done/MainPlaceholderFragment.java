@@ -544,6 +544,9 @@ public class MainPlaceholderFragment
 
             timerToggle = TimerToggle.SHOULD_START;
 
+            editTaskDetailsButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
+
             SnackbarManager.show(
                     Snackbar.with(getActivity())
                             .text("Done!")
