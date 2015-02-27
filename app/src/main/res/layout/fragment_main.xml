@@ -28,20 +28,6 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
 
-                <!--
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/taskNameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Task Name"
-                    app:floatingLabel="highlight"
-                    app:primaryColor="@color/white"
-                    app:baseColor="@color/white"
-                    android:layout_above="@+id/counterTextView"
-                    android:layout_alignParentLeft="true" />
-                    -->
-
-
                 <TextView
                     android:id="@+id/counterTextView"
                     android:layout_width="wrap_content"

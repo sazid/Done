@@ -283,17 +283,22 @@ public class MainPlaceholderFragment
                     .content("Are you sure you want to remove all the items in history?")
                     .positiveText("YES")
                     .negativeText("NO")
-                    .positiveColorRes(R.color.deep_purple_500)
-                    .negativeColorRes(R.color.deep_purple_500)
+                    .positiveColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .titleColorRes(R.color.white)
+                    .backgroundColorRes(R.color.deep_purple_500)
                     .show();
         } else if (id == R.id.editTaskDetailsButton) {
+            boolean wrapInsideScrollView = true;
             new MaterialDialog.Builder(getActivity())
                     .title("Task Details")
-                    .content("Please provide the task details")
+                    .customView(R.layout.dialog_task_details, wrapInsideScrollView)
                     .positiveText("OK")
                     .negativeText("CANCEL")
-                    .positiveColorRes(R.color.deep_purple_500)
-                    .negativeColorRes(R.color.deep_purple_500)
+                    .positiveColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .titleColorRes(R.color.white)
+                    .backgroundColorRes(R.color.deep_purple_500)
                     .show();
         }
     }

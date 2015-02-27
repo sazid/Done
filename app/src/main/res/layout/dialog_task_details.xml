@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/taskNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:singleLine="true"
+        app:baseColor="@color/white"
+        app:floatingLabel="highlight"
+        app:primaryColor="@color/white" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/taskDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:singleLine="false"
+        app:baseColor="@color/white"
+        app:floatingLabel="highlight"
+        app:primaryColor="@color/white" />
+
+</LinearLayout>
