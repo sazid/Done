@@ -70,6 +70,8 @@ public class MainPlaceholderFragment
     private SimpleCursorAdapter cursorAdapter;
     private String taskName = "";
     private String taskDescripiton = "";
+    private boolean taskStatusFinished = false;
+    private long currentTimeMillis = 0;
 
     // Drawables & colors
     private int counterBackgroundColor;
@@ -199,6 +201,9 @@ public class MainPlaceholderFragment
     }
 
     private void cancelCountdown() {
+        currentTimeMillis = System.currentTimeMillis();
+        taskStatusFinished = false;
+
         countArea.setBackgroundColor(getResources().getColor(R.color.deep_purple_500));
         revealArea.setBackgroundColor(counterBackgroundColor);
         toggleBtn.setColorNormal(getResources().getColor(R.color.red_500));
@@ -499,6 +504,9 @@ public class MainPlaceholderFragment
 
         @Override
         public void onFinish() {
+            currentTimeMillis = System.currentTimeMillis();
+            taskStatusFinished = true;
+
             counterTextView.setText("Great job! You finished the task!");
             animateToggleButton(false);
 
