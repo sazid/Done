@@ -175,6 +175,9 @@ public class MainPlaceholderFragment
         countArea.setBackgroundColor(getResources().getColor(R.color.red_500));
         toggleBtn.setColorNormal(getResources().getColor(R.color.deep_purple_500));
 
+        editTaskDetailsButton.setVisibility(View.INVISIBLE);
+        deleteButton.setVisibility(View.INVISIBLE);
+
         counter.start();
         colorAnimator.start();
 
@@ -199,6 +202,9 @@ public class MainPlaceholderFragment
         countArea.setBackgroundColor(getResources().getColor(R.color.deep_purple_500));
         revealArea.setBackgroundColor(counterBackgroundColor);
         toggleBtn.setColorNormal(getResources().getColor(R.color.red_500));
+
+        editTaskDetailsButton.setVisibility(View.VISIBLE);
+        deleteButton.setVisibility(View.VISIBLE);
 
         counter.cancel();
         colorAnimator.cancel();
