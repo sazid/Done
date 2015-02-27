@@ -70,7 +70,8 @@ public class MainPlaceholderFragment
     private SimpleCursorAdapter cursorAdapter;
     private String taskName = "";
     private String taskDescripiton = "";
-    private boolean taskStatusFinished = false;
+    // 0 indicates false and 1 indicates true (for SQLite compatibility)
+    private int taskStatusFinished = 0;
     private long currentTimeMillis = 0;
 
     // Drawables & colors
@@ -202,7 +203,7 @@ public class MainPlaceholderFragment
 
     private void cancelCountdown() {
         currentTimeMillis = System.currentTimeMillis();
-        taskStatusFinished = false;
+        taskStatusFinished = 0;
 
         countArea.setBackgroundColor(getResources().getColor(R.color.deep_purple_500));
         revealArea.setBackgroundColor(counterBackgroundColor);
@@ -505,7 +506,7 @@ public class MainPlaceholderFragment
         @Override
         public void onFinish() {
             currentTimeMillis = System.currentTimeMillis();
-            taskStatusFinished = true;
+            taskStatusFinished = 1;
 
             counterTextView.setText("Great job! You finished the task!");
             animateToggleButton(false);
