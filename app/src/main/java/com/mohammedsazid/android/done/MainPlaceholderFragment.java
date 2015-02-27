@@ -285,6 +285,7 @@ public class MainPlaceholderFragment
                     .negativeText("NO")
                     .positiveColorRes(R.color.white)
                     .negativeColorRes(R.color.white)
+                    .contentColorRes(R.color.white)
                     .titleColorRes(R.color.white)
                     .backgroundColorRes(R.color.deep_purple_500)
                     .show();
