@@ -28,7 +28,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -392,17 +391,30 @@ public class MainPlaceholderFragment
         setTimer();
         counterTextView.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
 
-        String[] temporaryData = {
-                "Physics",
-                "Math",
-                "Chemistry",
-                "Biology",
-                "Bangla",
-                "English"
-        };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.simple_list_item_1, temporaryData);
-        tasksListView.setAdapter(adapter);
+        cursorAdapter = new SimpleCursorAdapter(
+                getActivity(),
+                android.R.layout.simple_list_item_2,
+                null,
+                new String[]{TasksTable.COLUMN_TASK_NAME, TasksTable.COLUMN_DESCRIPTION},
+                new int[]{android.R.id.text1, android.R.id.text2},
+                0
+        );
+
+//        String[] temporaryData = {
+//                "Physics",
+//                "Math",
+//                "Chemistry",
+//                "Biology",
+//                "Bangla",
+//                "English"
+//        };
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                getActivity(), android.R.layout.simple_list_item_1, temporaryData);
+
+        tasksListView.setAdapter(cursorAdapter);
+
+        // Prepare the loader. Either re-connect with an existing one or create a new one
+        getLoaderManager().initLoader(0, null, this);
 
         return rootView;
     }
@@ -472,6 +484,7 @@ public class MainPlaceholderFragment
 
         // list of columns we want to retrieve values from
         String[] projection = {
+                TasksTable._ID,
                 TasksTable.COLUMN_TASK_NAME,
                 TasksTable.COLUMN_DESCRIPTION,
                 TasksTable.COLUMN_TASK_TIME,
