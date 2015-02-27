@@ -32,6 +32,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.mohammedsazid.android.done.data.DoneContract;
 import com.mohammedsazid.android.done.data.DoneProvider;
@@ -79,6 +80,7 @@ public class MainPlaceholderFragment
     private CounterClass counter;
     private ImageButton settingsButton;
     private ImageButton deleteButton;
+    private ImageButton editTaskDetailsButton;
     private ListView tasksListView;
 
     // Animations
@@ -117,6 +119,7 @@ public class MainPlaceholderFragment
         timerSetSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
         settingsButton = (ImageButton) rootView.findViewById(R.id.settingsButton);
         deleteButton = (ImageButton) rootView.findViewById(R.id.deleteButton);
+        editTaskDetailsButton = (ImageButton) rootView.findViewById(R.id.editTaskDetailsButton);
         tasksListView = (ListView) rootView.findViewById(R.id.taskListView);
 
         toggleBtnAnim = AnimationUtils.loadAnimation(
@@ -138,6 +141,7 @@ public class MainPlaceholderFragment
         timerSetSeekBar.setOnSeekBarChangeListener(this);
         settingsButton.setOnClickListener(this);
         deleteButton.setOnClickListener(this);
+        editTaskDetailsButton.setOnClickListener(this);
     }
 
     private void animateToggleButton(boolean toggle) {
@@ -275,10 +279,22 @@ public class MainPlaceholderFragment
                             .text("Settings")
             );
         } else if (id == R.id.deleteButton) {
-            SnackbarManager.show(
-                    Snackbar.with(getActivity())
-                            .text("Delete")
-            );
+            new MaterialDialog.Builder(getActivity())
+                    .content("Are you sure you want to remove all the items in history?")
+                    .positiveText("YES")
+                    .negativeText("NO")
+                    .positiveColorRes(R.color.deep_purple_500)
+                    .negativeColorRes(R.color.deep_purple_500)
+                    .show();
+        } else if (id == R.id.editTaskDetailsButton) {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Task Details")
+                    .content("Please provide the task details")
+                    .positiveText("OK")
+                    .negativeText("CANCEL")
+                    .positiveColorRes(R.color.deep_purple_500)
+                    .negativeColorRes(R.color.deep_purple_500)
+                    .show();
         }
     }
 
