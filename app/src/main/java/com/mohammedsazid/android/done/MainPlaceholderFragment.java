@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -472,6 +473,7 @@ public class MainPlaceholderFragment
         // list of columns we want to retrieve values from
         String[] projection = {
                 TasksTable.COLUMN_TASK_NAME,
+                TasksTable.COLUMN_DESCRIPTION,
                 TasksTable.COLUMN_TASK_TIME,
                 TasksTable.COLUMN_DATETIME,
                 TasksTable.COLUMN_TASK_STATUS
@@ -482,12 +484,13 @@ public class MainPlaceholderFragment
 
     @Override
     public void onLoadFinished(Loader loader, Object data) {
-
+        Cursor cursor = (Cursor) data;
+        cursorAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
-
+        cursorAdapter.swapCursor(null);
     }
 
     private void saveTask() {
