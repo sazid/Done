@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -66,6 +68,8 @@ public class MainPlaceholderFragment
     private TimerToggle timerToggle = TimerToggle.SHOULD_START;
     private Handler handler;
     private SimpleCursorAdapter cursorAdapter;
+    private String taskName = "";
+    private String taskDescripiton = "";
 
     // Drawables & colors
     private int counterBackgroundColor;
@@ -82,6 +86,8 @@ public class MainPlaceholderFragment
     private ImageButton deleteButton;
     private ImageButton editTaskDetailsButton;
     private ListView tasksListView;
+    private EditText taskNameEditText;
+    private EditText taskDescriptionEditText;
 
     // Animations
     private Animation toggleBtnAnim;
@@ -288,10 +294,20 @@ public class MainPlaceholderFragment
                     .contentColorRes(R.color.white)
                     .titleColorRes(R.color.white)
                     .backgroundColorRes(R.color.deep_purple_500)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            super.onPositive(dialog);
+                            SnackbarManager.show(
+                                    Snackbar.with(getActivity())
+                                            .text("History cleared")
+                            );
+                        }
+                    })
                     .show();
         } else if (id == R.id.editTaskDetailsButton) {
             boolean wrapInsideScrollView = true;
-            new MaterialDialog.Builder(getActivity())
+            final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                     .title("Task Details")
                     .customView(R.layout.dialog_task_details, wrapInsideScrollView)
                     .positiveText("OK")
@@ -300,7 +316,37 @@ public class MainPlaceholderFragment
                     .negativeColorRes(R.color.white)
                     .titleColorRes(R.color.white)
                     .backgroundColorRes(R.color.deep_purple_500)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            super.onPositive(dialog);
+                            taskName = taskNameEditText.getText().toString();
+                            taskDescripiton = taskDescriptionEditText.getText().toString();
+
+                            SnackbarManager.show(
+                                    Snackbar.with(getActivity())
+                                            .text("Task Name: " + taskName + ", Task Description: " + taskDescripiton)
+                            );
+                        }
+
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            super.onNegative(dialog);
+                        }
+                    })
+                    .showListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialog) {
+                            taskNameEditText.setText(taskName);
+                            taskDescriptionEditText.setText(taskDescripiton);
+                        }
+                    })
                     .show();
+
+            taskNameEditText = (EditText) dialog.getCustomView()
+                    .findViewById(R.id.taskNameEditText);
+            taskDescriptionEditText = (EditText) dialog.getCustomView()
+                    .findViewById(R.id.taskDescriptionEditText);
         }
     }
 
@@ -312,6 +358,7 @@ public class MainPlaceholderFragment
         bindViews(rootView);
         bindListeners();
 
+        // Animate background
         Integer colorFrom = getResources().getColor(R.color.red_500);
         Integer colorTo = getResources().getColor(R.color.green_500);
 
