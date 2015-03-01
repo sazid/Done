@@ -432,7 +432,7 @@ public class MainPlaceholderFragment
                     TextView tv = (TextView) view;
                     double taskTime = cursor.getDouble(taskTimeColIdx);
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.US);
+                    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.getDefault());
                     sdf.setTimeZone(TimeZone.getDefault());
 
                     formattedText = sdf.format(taskTime);
@@ -497,7 +497,7 @@ public class MainPlaceholderFragment
                 }
 
                 // Modify the task time for the UI
-                SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.US);
+                SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.getDefault());
                 sdf.setTimeZone(TimeZone.getDefault());
                 taskTime = sdf.format(taskTimeDb);
 
@@ -505,7 +505,7 @@ public class MainPlaceholderFragment
                 taskDuration = sdf.format(taskDurationDb);
 
                 // Modify the date for the UI
-                sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 dateTime = sdf.format(dateTimeDb);
 
                 final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
