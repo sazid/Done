@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.text.TextUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -119,16 +118,11 @@ public class DoneProvider extends ContentProvider {
                 break;
             case TASK_ID:
                 String task_id = uri.getLastPathSegment();
-                if (TextUtils.isEmpty(selection)) {
-                    db.delete(
-                            TasksTable.TABLE_NAME,
-                            TasksTable._ID + "=" + task_id,
-                            null);
-                } else {
-                    db.delete(TasksTable.TABLE_NAME,
-                            TasksTable._ID + "=" + task_id + " AND " + selection,
-                            selectionArgs);
-                }
+                deletedRows = db.delete(
+                        TasksTable.TABLE_NAME,
+                        TasksTable._ID + " = ?",
+                        new String[]{task_id}
+                );
 
                 break;
             default:
