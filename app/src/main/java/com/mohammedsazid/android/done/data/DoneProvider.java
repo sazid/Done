@@ -159,7 +159,8 @@ public class DoneProvider extends ContentProvider {
                 TasksTable.COLUMN_TASK_TIME,
                 TasksTable.COLUMN_DATETIME,
                 TasksTable.COLUMN_TASK_STATUS,
-                TasksTable.COLUMN_DESCRIPTION
+                TasksTable.COLUMN_DESCRIPTION,
+                TasksTable.COLUMN_TASK_DURATION
         };
 
         if (projection != null) {

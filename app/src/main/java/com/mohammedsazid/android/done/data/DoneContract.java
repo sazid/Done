@@ -26,7 +26,7 @@ public class DoneContract {
          * Label of the task<br>
          * <b>[required]</b>
          */
-        public static final String COLUMN_TASK_NAME = "task_label";
+        public static final String COLUMN_TASK_NAME = "task_title";
 
         /**
          * Time taken to complete the task<br>
@@ -51,7 +51,13 @@ public class DoneContract {
          * <i>(not used currently)</i><br>
          * <b>[not required]</b>
          */
-        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_DESCRIPTION = "task_description";
+
+        /**
+         * Duration of the task run<b>
+         * <b>[required]</b>
+         */
+        public static final String COLUMN_TASK_DURATION = "task_duration";
 
         /**
          * The SQL statement for creating the table
@@ -62,9 +68,10 @@ public class DoneContract {
                         + TasksTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + TasksTable.COLUMN_TASK_NAME + " TEXT NOT NULL, "
                         + TasksTable.COLUMN_TASK_TIME + " REAL NOT NULL, "
-                        + TasksTable.COLUMN_DATETIME + " TEXT NOT NULL,"
-                        + TasksTable.COLUMN_TASK_STATUS + " INTEGER NOT NULL,"
-                        + TasksTable.COLUMN_DESCRIPTION + " TEXT NOT NULL"
+                        + TasksTable.COLUMN_DATETIME + " TEXT NOT NULL, "
+                        + TasksTable.COLUMN_TASK_STATUS + " INTEGER NOT NULL, "
+                        + TasksTable.COLUMN_DESCRIPTION + " TEXT NOT NULL, "
+                        + TasksTable.COLUMN_TASK_DURATION + " TEXT NOT NULL"
                         + ");";
 
 
