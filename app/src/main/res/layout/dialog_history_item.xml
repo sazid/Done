@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textColor="#80cfcfcf"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:id="@+id/taskTitleDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Task Title"
+        android:textColor="@color/white"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Description"
+        android:textColor="#80cfcfcf"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:id="@+id/taskDescriptionDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Task Description"
+        android:textColor="@color/white"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Time of task"
+        android:textColor="#80cfcfcf"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:id="@+id/taskTimeDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="05:00"
+        android:textColor="@color/white"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Status"
+        android:textColor="#80cfcfcf"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:id="@+id/taskStatusDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Done"
+        android:textColor="@color/white"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Date"
+        android:textColor="#80cfcfcf"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:id="@+id/taskDateDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="01/03/2015"
+        android:textColor="@color/white"
+        android:textSize="@dimen/customEntry" />
+
+</LinearLayout>

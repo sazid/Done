@@ -480,19 +480,20 @@ public class MainPlaceholderFragment
                 String dateTime = cursor.getString(
                         cursor.getColumnIndex(TasksTable.COLUMN_DATETIME));
 
-                new MaterialDialog.Builder(getActivity())
-                        .content("Title: " + taskTitle + "\nDescription: " + taskDescription + "\nTime: " + taskTime + "\nStatus: " + taskStatus + "\nDate: " + dateTime)
-                        .positiveText("DELETE")
-                        .negativeText("OK")
+                final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                        .title("Task Details")
+                        .positiveText("OK")
+                        .negativeText("DELETE")
                         .positiveColorRes(R.color.white)
                         .negativeColorRes(R.color.white)
                         .contentColorRes(R.color.white)
                         .titleColorRes(R.color.white)
                         .backgroundColorRes(R.color.deep_purple_500)
+                        .customView(R.layout.dialog_history_item, true)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
+                            public void onNegative(MaterialDialog dialog) {
+                                super.onNegative(dialog);
                                 Uri contentUri = ContentUris
                                         .withAppendedId(DoneProvider.CONTENT_URI, db_id);
                                 getActivity().getContentResolver()
@@ -505,6 +506,17 @@ public class MainPlaceholderFragment
                             }
                         })
                         .show();
+
+                ((TextView) dialog.getCustomView().findViewById(R.id.taskTitleDialog))
+                        .setText(taskTitle);
+                ((TextView) dialog.getCustomView().findViewById(R.id.taskDescriptionDialog))
+                        .setText(taskDescription);
+                ((TextView) dialog.getCustomView().findViewById(R.id.taskTimeDialog))
+                        .setText(taskTime);
+                ((TextView) dialog.getCustomView().findViewById(R.id.taskStatusDialog))
+                        .setText(taskStatus);
+                ((TextView) dialog.getCustomView().findViewById(R.id.taskDateDialog))
+                        .setText(dateTime);
             }
         });
 
