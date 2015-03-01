@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -458,6 +460,53 @@ public class MainPlaceholderFragment
         });
 
         tasksListView.setAdapter(cursorAdapter);
+
+        tasksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                Cursor cursor = (Cursor) parent.getAdapter().getItem(position);
+
+                cursor.moveToPosition(position);
+                final int db_id = cursor.getInt(cursor.getColumnIndex(TasksTable._ID));
+
+                String taskTitle = cursor.getString(
+                        cursor.getColumnIndex(TasksTable.COLUMN_TASK_NAME));
+                String taskDescription = cursor.getString(
+                        cursor.getColumnIndex(TasksTable.COLUMN_DESCRIPTION));
+                String taskTime = cursor.getString(
+                        cursor.getColumnIndex(TasksTable.COLUMN_TASK_TIME));
+                String taskStatus = cursor.getString(
+                        cursor.getColumnIndex(TasksTable.COLUMN_TASK_STATUS));
+                String dateTime = cursor.getString(
+                        cursor.getColumnIndex(TasksTable.COLUMN_DATETIME));
+
+                new MaterialDialog.Builder(getActivity())
+                        .content("Title: " + taskTitle + "\nDescription: " + taskDescription + "\nTime: " + taskTime + "\nStatus: " + taskStatus + "\nDate: " + dateTime)
+                        .positiveText("DELETE")
+                        .negativeText("OK")
+                        .positiveColorRes(R.color.white)
+                        .negativeColorRes(R.color.white)
+                        .contentColorRes(R.color.white)
+                        .titleColorRes(R.color.white)
+                        .backgroundColorRes(R.color.deep_purple_500)
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                Uri contentUri = ContentUris
+                                        .withAppendedId(DoneProvider.CONTENT_URI, db_id);
+                                getActivity().getContentResolver()
+                                        .delete(contentUri, null, null);
+
+                                SnackbarManager.show(
+                                        Snackbar.with(getActivity())
+                                                .text("Task deleted")
+                                );
+                            }
+                        })
+                        .show();
+            }
+        });
 
         // Prepare the loader. Either re-connect with an existing one or create a new one
         getLoaderManager().initLoader(0, null, this);
