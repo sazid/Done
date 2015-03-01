@@ -469,23 +469,43 @@ public class MainPlaceholderFragment
                 cursor.moveToPosition(position);
                 final int db_id = cursor.getInt(cursor.getColumnIndex(TasksTable._ID));
 
-                String taskTitle = cursor.getString(
+                String taskTitleDb = cursor.getString(
                         cursor.getColumnIndex(TasksTable.COLUMN_TASK_NAME));
-                String taskDescription = cursor.getString(
+                String taskDescriptionDb = cursor.getString(
                         cursor.getColumnIndex(TasksTable.COLUMN_DESCRIPTION));
-                String taskTime = cursor.getString(
+                double taskTimeDb = cursor.getDouble(
                         cursor.getColumnIndex(TasksTable.COLUMN_TASK_TIME));
-                String taskStatus = cursor.getString(
+                int taskStatusDb = cursor.getInt(
                         cursor.getColumnIndex(TasksTable.COLUMN_TASK_STATUS));
-                String dateTime = cursor.getString(
+                double dateTimeDb = cursor.getDouble(
                         cursor.getColumnIndex(TasksTable.COLUMN_DATETIME));
+
+                String taskStatus = "";
+                String taskTime = "";
+                String dateTime = "";
+
+                // Modify the status for the UI
+                if (taskStatusDb == 0) {
+                    taskStatus = "Cancelled";
+                } else if (taskStatusDb == 1) {
+                    taskStatus = "Done";
+                }
+
+                // Modify the task time for the UI
+                SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.US);
+                sdf.setTimeZone(TimeZone.getDefault());
+                taskTime = sdf.format(taskTimeDb);
+
+                // Modify the date for the UI
+                sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                dateTime = sdf.format(dateTimeDb);
 
                 final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                         .title("Task Details")
                         .positiveText("OK")
                         .negativeText("DELETE")
                         .positiveColorRes(R.color.white)
-                        .negativeColorRes(R.color.white)
+                        .negativeColorRes(R.color.red_500)
                         .contentColorRes(R.color.white)
                         .titleColorRes(R.color.white)
                         .backgroundColorRes(R.color.deep_purple_500)
@@ -508,9 +528,9 @@ public class MainPlaceholderFragment
                         .show();
 
                 ((TextView) dialog.getCustomView().findViewById(R.id.taskTitleDialog))
-                        .setText(taskTitle);
+                        .setText(taskTitleDb);
                 ((TextView) dialog.getCustomView().findViewById(R.id.taskDescriptionDialog))
-                        .setText(taskDescription);
+                        .setText(taskDescriptionDb);
                 ((TextView) dialog.getCustomView().findViewById(R.id.taskTimeDialog))
                         .setText(taskTime);
                 ((TextView) dialog.getCustomView().findViewById(R.id.taskStatusDialog))
