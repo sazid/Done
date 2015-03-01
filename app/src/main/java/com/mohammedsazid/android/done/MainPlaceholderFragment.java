@@ -41,6 +41,9 @@ import com.mohammedsazid.android.done.data.DoneProvider;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.codetail.animation.SupportAnimator;
@@ -395,14 +398,69 @@ public class MainPlaceholderFragment
         setTimer();
         counterTextView.setText(MainPlaceholderFragment.formatTime(timeoutDuration));
 
+        String[] displayValues = {
+                TasksTable.COLUMN_TASK_NAME,
+                TasksTable.COLUMN_DESCRIPTION,
+                TasksTable.COLUMN_TASK_TIME,
+                TasksTable.COLUMN_TASK_STATUS
+        };
+
+        int[] displayViewIds = {
+                R.id.taskTitleTextView,
+                R.id.taskDescriptionTextView,
+                R.id.taskTimeTextView,
+                R.id.taskStatusTextView
+        };
+
         cursorAdapter = new SimpleCursorAdapter(
                 getActivity(),
-                android.R.layout.simple_list_item_2,
+//                android.R.layout.simple_list_item_2,
+                R.layout.history_list_item,
                 null,
-                new String[]{TasksTable.COLUMN_TASK_NAME, TasksTable.COLUMN_DESCRIPTION},
-                new int[]{android.R.id.text1, android.R.id.text2},
+                displayValues,
+                displayViewIds,
                 0
         );
+
+        cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+
+                final int taskTimeColIdx = cursor.getColumnIndex(TasksTable.COLUMN_TASK_TIME);
+                final int taskStatusColIdx = cursor.getColumnIndex(TasksTable.COLUMN_TASK_STATUS);
+                String formattedText = null;
+
+                if (columnIndex == taskTimeColIdx) {
+                    TextView tv = (TextView) view;
+                    double taskTime = cursor.getDouble(taskTimeColIdx);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.US);
+                    sdf.setTimeZone(TimeZone.getDefault());
+
+                    formattedText = sdf.format(taskTime);
+                    tv.setText(formattedText);
+
+                    return true;
+                } else if (columnIndex == taskStatusColIdx) {
+                    TextView tv = (TextView) view;
+                    int taskStatus = cursor.getInt(taskStatusColIdx);
+
+                    if (taskStatus == 0) {
+                        formattedText = "Cancelled";
+                        tv.setTextColor(getResources().getColor(R.color.red_700));
+                    } else if (taskStatus == 1) {
+                        formattedText = "Done";
+                        tv.setTextColor(getResources().getColor(R.color.green_700));
+                    }
+
+                    tv.setText(formattedText);
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
 //        String[] temporaryData = {
 //                "Physics",
