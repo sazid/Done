@@ -345,11 +345,6 @@ public class MainPlaceholderFragment
                             super.onPositive(dialog);
                             taskName = taskNameEditText.getText().toString();
                             taskDescripiton = taskDescriptionEditText.getText().toString();
-
-                            SnackbarManager.show(
-                                    Snackbar.with(getActivity())
-                                            .text("Task Name: " + taskName + ", Task Description: " + taskDescripiton)
-                            );
                         }
 
                         @Override
