@@ -95,7 +95,7 @@
                     android:layout_toStartOf="@+id/deleteButton"
                     android:gravity="fill_vertical"
                     android:singleLine="true"
-                    android:text="Done"
+                    android:text="@string/app_name"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/white"
                     android:textIsSelectable="false"
