@@ -80,6 +80,7 @@ public class MainPlaceholderFragment
     // 0 indicates false and 1 indicates true (for SQLite compatibility)
     private int taskStatusFinished = 0;
     private long currentTimeMillis = 0;
+    private long taskDurationTime = 0;
 
     // Drawables & colors
     private int counterBackgroundColor;
@@ -475,14 +476,18 @@ public class MainPlaceholderFragment
                         cursor.getColumnIndex(TasksTable.COLUMN_DESCRIPTION));
                 double taskTimeDb = cursor.getDouble(
                         cursor.getColumnIndex(TasksTable.COLUMN_TASK_TIME));
+                double taskDurationDb = cursor.getDouble(
+                        cursor.getColumnIndex(TasksTable.COLUMN_TASK_DURATION));
                 int taskStatusDb = cursor.getInt(
                         cursor.getColumnIndex(TasksTable.COLUMN_TASK_STATUS));
                 double dateTimeDb = cursor.getDouble(
                         cursor.getColumnIndex(TasksTable.COLUMN_DATETIME));
 
+                // Strings for displaying in the UI
                 String taskStatus = "";
                 String taskTime = "";
                 String dateTime = "";
+                String taskDuration = "";
 
                 // Modify the status for the UI
                 if (taskStatusDb == 0) {
@@ -495,6 +500,9 @@ public class MainPlaceholderFragment
                 SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.US);
                 sdf.setTimeZone(TimeZone.getDefault());
                 taskTime = sdf.format(taskTimeDb);
+
+                // Modify the task duration for the UI
+                taskDuration = sdf.format(taskDurationDb);
 
                 // Modify the date for the UI
                 sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -533,6 +541,8 @@ public class MainPlaceholderFragment
                         .setText(taskDescriptionDb);
                 ((TextView) dialog.getCustomView().findViewById(R.id.taskTimeDialog))
                         .setText(taskTime);
+                ((TextView) dialog.getCustomView().findViewById(R.id.taskRunDurationDialog))
+                        .setText(taskDuration);
                 ((TextView) dialog.getCustomView().findViewById(R.id.taskStatusDialog))
                         .setText(taskStatus);
                 ((TextView) dialog.getCustomView().findViewById(R.id.taskDateDialog))
@@ -616,7 +626,8 @@ public class MainPlaceholderFragment
                 TasksTable.COLUMN_DESCRIPTION,
                 TasksTable.COLUMN_TASK_TIME,
                 TasksTable.COLUMN_DATETIME,
-                TasksTable.COLUMN_TASK_STATUS
+                TasksTable.COLUMN_TASK_STATUS,
+                TasksTable.COLUMN_TASK_DURATION
         };
 
         return new CursorLoader(getActivity(), baseUri, projection, null, null, null);
@@ -644,6 +655,7 @@ public class MainPlaceholderFragment
         values.put(TasksTable.COLUMN_DATETIME, currentTimeMillis);
         values.put(TasksTable.COLUMN_TASK_TIME, timeoutDuration);
         values.put(TasksTable.COLUMN_TASK_STATUS, taskStatusFinished);
+        values.put(TasksTable.COLUMN_TASK_DURATION, taskDurationTime);
 
         getActivity().getContentResolver()
                 .insert(DoneProvider.CONTENT_URI, values);
@@ -655,13 +667,17 @@ public class MainPlaceholderFragment
 
     private class CounterClass extends CountDownTimer {
 
+        private long startMillis;
+
         public CounterClass(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
+            startMillis = millisInFuture;
         }
 
         @Override
         public void onTick(long millisUntilFinished) {
             String displayString = MainPlaceholderFragment.formatTime(millisUntilFinished);
+            taskDurationTime = startMillis - millisUntilFinished;
 
             counterTextView.setText(displayString);
         }

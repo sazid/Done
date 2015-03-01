@@ -74,6 +74,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
+        android:text="Task Duration"
+        android:textColor="#80cfcfcf"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:id="@+id/taskRunDurationDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="03:45"
+        android:textColor="@color/white"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
         android:text="Date"
         android:textColor="#80cfcfcf"
         android:textSize="@dimen/customTitle" />
