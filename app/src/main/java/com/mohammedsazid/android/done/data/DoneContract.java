@@ -71,7 +71,7 @@ public class DoneContract {
                         + TasksTable.COLUMN_DATETIME + " TEXT NOT NULL, "
                         + TasksTable.COLUMN_TASK_STATUS + " INTEGER NOT NULL, "
                         + TasksTable.COLUMN_DESCRIPTION + " TEXT NOT NULL, "
-                        + TasksTable.COLUMN_TASK_DURATION + " TEXT NOT NULL"
+                        + TasksTable.COLUMN_TASK_DURATION + " REAL NOT NULL"
                         + ");";
 
 
