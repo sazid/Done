@@ -457,17 +457,6 @@ public class MainPlaceholderFragment
             }
         });
 
-//        String[] temporaryData = {
-//                "Physics",
-//                "Math",
-//                "Chemistry",
-//                "Biology",
-//                "Bangla",
-//                "English"
-//        };
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                getActivity(), android.R.layout.simple_list_item_1, temporaryData);
-
         tasksListView.setAdapter(cursorAdapter);
 
         // Prepare the loader. Either re-connect with an existing one or create a new one
